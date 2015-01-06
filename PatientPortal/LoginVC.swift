@@ -24,7 +24,7 @@ class LoginVC: UIViewController {
     }
     
     
-    @IBAction func singinTapped(sender: UIButton) {
+    @IBAction func signinTapped(sender: UIButton) {
         var username:NSString = txtUsername.text
         var password:NSString = txtPassword.text
         

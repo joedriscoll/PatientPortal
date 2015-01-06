@@ -7,12 +7,25 @@
 //
 
 import UIKit
-
+import HealthKit
+let health:HKHealthStore = HKHealthStore()
 class ViewController: UIViewController {
 
     @IBOutlet weak var usernameLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
+        authorizeHealthKit { (authorized,  error) -> Void in
+            if authorized {
+                println("HealthKit authorization received.")
+            }
+            else
+            {
+                println("HealthKit authorization denied!")
+                if error != nil {
+                    println("\(error)")
+                }
+            }
+        }
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -21,9 +34,11 @@ class ViewController: UIViewController {
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
         
+        
         if (isLoggedIn != 1) {
             self.performSegueWithIdentifier("goto_login", sender: self)
         } else{
+            
             
             self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
         }
@@ -40,6 +55,38 @@ class ViewController: UIViewController {
         let appDomain = NSBundle.mainBundle().bundleIdentifier
         NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain!)
         self.performSegueWithIdentifier("goto_login", sender: self)
+    }
+    
+    func authorizeHealthKit(completion: ((success:Bool, error:NSError!) -> Void)!)
+    {
+        // 1. Set the types you want to read from HK Store
+        let healthKitTypesToRead = NSSet(array:[
+            HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned),
+            HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierDistanceWalkingRunning)
+            ])
+        
+        // 2. Set the types you want to write to HK Store
+        let healthKitTypesToWrite = NSSet(array:[])
+        
+        // 3. If the store is not available (for instance, iPad) return an error and don't go on.
+        if !HKHealthStore.isHealthDataAvailable()
+        {
+            let error = NSError(domain: "com.raywenderlich.tutorials.healthkit", code: 2, userInfo: [NSLocalizedDescriptionKey:"HealthKit is not available in this Device"])
+            if( completion != nil )
+            {
+                completion(success:false, error:error)
+            }
+            return;
+        }
+        
+        // 4.  Request HealthKit authorization
+        health.requestAuthorizationToShareTypes(healthKitTypesToWrite, readTypes: healthKitTypesToRead) { (success, error) -> Void in
+            
+            if( completion != nil )
+            {
+                completion(success:success,error:error)
+            }
+        }
     }
 
 }

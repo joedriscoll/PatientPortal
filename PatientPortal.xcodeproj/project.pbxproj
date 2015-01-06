@@ -15,6 +15,7 @@
 		7C648BA61A5B51F80067D539 /* PatientPortalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C648BA51A5B51F80067D539 /* PatientPortalTests.swift */; };
 		7C648BB01A5B580C0067D539 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C648BAF1A5B580C0067D539 /* LoginVC.swift */; };
 		7C648BB21A5B590C0067D539 /* SignupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C648BB11A5B590C0067D539 /* SignupVC.swift */; };
+		7CED59C41A5C71640091449C /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CED59C31A5C71640091449C /* HealthKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,8 @@
 		7C648BA51A5B51F80067D539 /* PatientPortalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientPortalTests.swift; sourceTree = "<group>"; };
 		7C648BAF1A5B580C0067D539 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		7C648BB11A5B590C0067D539 /* SignupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupVC.swift; sourceTree = "<group>"; };
+		7CED59C21A5C71640091449C /* PatientPortal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PatientPortal.entitlements; sourceTree = "<group>"; };
+		7CED59C31A5C71640091449C /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CED59C41A5C71640091449C /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +67,7 @@
 		7C648B811A5B51F80067D539 = {
 			isa = PBXGroup;
 			children = (
+				7CED59C31A5C71640091449C /* HealthKit.framework */,
 				7C648B8C1A5B51F80067D539 /* PatientPortal */,
 				7C648BA21A5B51F80067D539 /* PatientPortalTests */,
 				7C648B8B1A5B51F80067D539 /* Products */,
@@ -81,6 +86,7 @@
 		7C648B8C1A5B51F80067D539 /* PatientPortal */ = {
 			isa = PBXGroup;
 			children = (
+				7CED59C21A5C71640091449C /* PatientPortal.entitlements */,
 				7C648B8F1A5B51F80067D539 /* AppDelegate.swift */,
 				7C648B911A5B51F80067D539 /* ViewController.swift */,
 				7C648B931A5B51F80067D539 /* Main.storyboard */,
@@ -167,6 +173,12 @@
 				TargetAttributes = {
 					7C648B891A5B51F80067D539 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = T9LMGH78W9;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
 					};
 					7C648B9E1A5B51F80067D539 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -344,9 +356,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PatientPortal/PatientPortal.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = PatientPortal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -354,9 +370,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PatientPortal/PatientPortal.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = PatientPortal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -413,6 +433,7 @@
 				7C648BAB1A5B51F80067D539 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7C648BAC1A5B51F80067D539 /* Build configuration list for PBXNativeTarget "PatientPortalTests" */ = {
 			isa = XCConfigurationList;
@@ -421,6 +442,7 @@
 				7C648BAE1A5B51F80067D539 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
