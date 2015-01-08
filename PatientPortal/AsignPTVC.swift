@@ -10,6 +10,7 @@ import UIKit
 
 class AsignPTVC: UIViewController {
 
+    @IBOutlet weak var ptUsername: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,6 +22,8 @@ class AsignPTVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func changePtTapped(sender: UIButton) {
+    }
 
     /*
     // MARK: - Navigation

@@ -174,11 +174,17 @@
                                 <state key="normal" title="Change PT">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="changePtTapped:" destination="WxL-Dc-1Pz" eventType="touchUpInside" id="wSv-dd-ziI"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="l5U-lk-fch"/>
+                    <connections>
+                        <outlet property="ptUsername" destination="ioN-UW-av9" id="C2B-2k-5rt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ryf-64-h0p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
