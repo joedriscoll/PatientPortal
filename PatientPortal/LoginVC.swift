@@ -36,11 +36,12 @@ class LoginVC: UIViewController {
             alertView.addButtonWithTitle("OK")
             alertView.show()
         } else{
+            println("here")
             
-            var post: NSString = "username=\(username)&password = \(password)"
+            var post: NSString = "username=\(username)&password=\(password)"
             
             NSLog("PostData: %@",post);
-            var url:NSURL = NSURL(string: "http://localhost/login")!
+            var url:NSURL = NSURL(string: "http://localhost:8000/ptapi/login")!
             var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
             
             var postLength:NSString = String( postData.length )
@@ -75,6 +76,7 @@ class LoginVC: UIViewController {
                     
                     
                     let success:NSInteger = jsonData.valueForKey("success") as NSInteger
+                    let session_key:NSString = jsonData.valueForKey("session_key") as NSString
                     
                     //[jsonData[@"success"] integerValue];
                     
@@ -86,6 +88,7 @@ class LoginVC: UIViewController {
                         
                         var prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                         prefs.setObject(username, forKey: "USERNAME")
+                        prefs.setObject(session_key, forKey: "SESSION_KEY")
                         prefs.setInteger(1, forKey: "ISLOGGEDIN")
                         prefs.synchronize()
                         

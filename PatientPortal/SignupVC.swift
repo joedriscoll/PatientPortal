@@ -13,6 +13,7 @@ class SignupVC: UIViewController {
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet weak var txtConfirm: UITextField!
+    @IBOutlet weak var txtEmail: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,6 +30,7 @@ class SignupVC: UIViewController {
         var username:NSString = txtUsername.text as NSString
         var password:NSString = txtPassword.text as NSString
         var confirm_password:NSString = txtConfirm.text as NSString
+        var email:NSString = txtEmail.text as NSString
         
         if ( username.isEqualToString("") || password.isEqualToString("") ) {
             
@@ -48,11 +50,11 @@ class SignupVC: UIViewController {
             alertView.show()
         } else {
             
-            var post:NSString = "username=\(username)&password=\(password)&c_password=\(confirm_password)"
+            var post:NSString = "username=\(username)&password=\(password)&c_password=\(confirm_password)&email=\(email)&type=patient"
             
             NSLog("PostData: %@",post);
             
-            var url:NSURL = NSURL(string: "http://localhost/signin")!
+            var url:NSURL = NSURL(string: "http://localhost:8000/ptapi/register")!
             
             var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
             
