@@ -68,7 +68,7 @@ class SettingsVC: UIViewController {
                 assingedPTLabel.text = ptUsername
                 if (ptUsername == "None"){
                     
-                    changePTButton.setTitle("Asign a Physical Therapist", forState: UIControlState.Normal)
+                    changePTButton.setTitle("Assign a Physical Therapist", forState: UIControlState.Normal)
                 }
                 else {
                     changePTButton.setTitle("Change Assigned Physical Therapist", forState: UIControlState.Normal)
