@@ -11,7 +11,7 @@ import HealthKit
 let health:HKHealthStore = HKHealthStore()
 class ViewController: UIViewController {
 
-    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         authorizeHealthKit { (authorized,  error) -> Void in
@@ -39,7 +39,8 @@ class ViewController: UIViewController {
         if (isLoggedIn != 1) {
             self.performSegueWithIdentifier("goto_login", sender: self)
         } else{
-            println(prefs.valueForKey("USERNAME"))
+            let username = prefs.valueForKey("USERNAME") as NSString
+            titleLabel.text = username+"'s Patient Portal"
             //self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
         }
     }

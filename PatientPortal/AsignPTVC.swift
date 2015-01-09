@@ -82,10 +82,10 @@ class AsignPTVC: UIViewController {
                     if jsonData["error_message"] as? NSString != nil {
                         error_msg = jsonData["error_message"] as NSString
                     } else {
-                        error_msg = "Unknown Error"
+                        error_msg = "PT Username Not Found"
                     }
                     var alertView:UIAlertView = UIAlertView()
-                    alertView.title = "PT Username not found!"
+                    alertView.title = "Error"
                     alertView.message = error_msg
                     alertView.delegate = self
                     alertView.addButtonWithTitle("OK")

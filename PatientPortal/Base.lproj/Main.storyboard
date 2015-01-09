@@ -74,6 +74,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="R65-Wq-h7l"/>
                     <connections>
+                        <outlet property="titleLabel" destination="dQZ-YM-YQL" id="v1i-4e-HhD"/>
                         <segue destination="b6q-MX-vZm" kind="modal" identifier="goto_login" id="STl-cd-8eN"/>
                     </connections>
                 </viewController>

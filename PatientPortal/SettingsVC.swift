@@ -18,11 +18,16 @@ class SettingsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.getSettings()
+
         
         // Do any additional setup after loading the view.
     }
-
     
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        self.getSettings()
+    }
     
 
     override func didReceiveMemoryWarning() {
