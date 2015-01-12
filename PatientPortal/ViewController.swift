@@ -10,6 +10,8 @@ import UIKit
 import HealthKit
 let health:HKHealthStore = HKHealthStore()
 class ViewController: UIViewController {
+    let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+
 
     @IBOutlet weak var titleLabel: UILabel!
     override func viewDidLoad() {
@@ -31,7 +33,6 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
 
         
@@ -53,9 +54,8 @@ class ViewController: UIViewController {
 
 
     @IBAction func logPainTapped(sender: UIButton) {
-        let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let session_key = prefs.valueForKey("SESSION_KEY") as NSString
-        
+
         var post:NSString = "session_key=\(session_key)&data=None"
         
         NSLog("PostData: %@",post);
