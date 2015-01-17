@@ -24,6 +24,9 @@ class SettingsVC: UIViewController {
     }
     
 
+    @IBAction func HomeTapped(sender: UIButton) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         self.getSettings()

@@ -15,8 +15,8 @@
 		7C648BA61A5B51F80067D539 /* PatientPortalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C648BA51A5B51F80067D539 /* PatientPortalTests.swift */; };
 		7C648BB01A5B580C0067D539 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C648BAF1A5B580C0067D539 /* LoginVC.swift */; };
 		7C648BB21A5B590C0067D539 /* SignupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C648BB11A5B590C0067D539 /* SignupVC.swift */; };
+		7C78DF2D1A69EA6000795A75 /* AssignVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C78DF2C1A69EA6000795A75 /* AssignVC.swift */; };
 		7CED59C41A5C71640091449C /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CED59C31A5C71640091449C /* HealthKit.framework */; };
-		7CED59C61A5F23450091449C /* AsignPTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED59C51A5F23450091449C /* AsignPTVC.swift */; };
 		7CED59C81A5F253F0091449C /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED59C71A5F253F0091449C /* SettingsVC.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,9 +43,9 @@
 		7C648BA51A5B51F80067D539 /* PatientPortalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientPortalTests.swift; sourceTree = "<group>"; };
 		7C648BAF1A5B580C0067D539 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		7C648BB11A5B590C0067D539 /* SignupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupVC.swift; sourceTree = "<group>"; };
+		7C78DF2C1A69EA6000795A75 /* AssignVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignVC.swift; sourceTree = "<group>"; };
 		7CED59C21A5C71640091449C /* PatientPortal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PatientPortal.entitlements; sourceTree = "<group>"; };
 		7CED59C31A5C71640091449C /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		7CED59C51A5F23450091449C /* AsignPTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsignPTVC.swift; sourceTree = "<group>"; };
 		7CED59C71A5F253F0091449C /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,8 +99,8 @@
 				7C648B8D1A5B51F80067D539 /* Supporting Files */,
 				7C648BAF1A5B580C0067D539 /* LoginVC.swift */,
 				7C648BB11A5B590C0067D539 /* SignupVC.swift */,
-				7CED59C51A5F23450091449C /* AsignPTVC.swift */,
 				7CED59C71A5F253F0091449C /* SettingsVC.swift */,
+				7C78DF2C1A69EA6000795A75 /* AssignVC.swift */,
 			);
 			path = PatientPortal;
 			sourceTree = "<group>";
@@ -240,7 +240,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C648BB21A5B590C0067D539 /* SignupVC.swift in Sources */,
-				7CED59C61A5F23450091449C /* AsignPTVC.swift in Sources */,
+				7C78DF2D1A69EA6000795A75 /* AssignVC.swift in Sources */,
 				7C648B921A5B51F80067D539 /* ViewController.swift in Sources */,
 				7C648B901A5B51F80067D539 /* AppDelegate.swift in Sources */,
 				7C648BB01A5B580C0067D539 /* LoginVC.swift in Sources */,

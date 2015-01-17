@@ -14,6 +14,7 @@ class ViewController: UIViewController {
 
 
     @IBOutlet weak var titleLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         authorizeHealthKit { (authorized,  error) -> Void in

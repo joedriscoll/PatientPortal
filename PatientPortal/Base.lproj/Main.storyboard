@@ -9,7 +9,7 @@
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="PatientPortal" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hwx-EN-pXk">
@@ -87,7 +87,7 @@
             <objects>
                 <viewController id="a4G-5t-ZXe" customClass="SettingsVC" customModule="PatientPortal" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Pm-Bo-E7D">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Asigned Physical Therapist:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OTa-8I-gQq">
@@ -111,7 +111,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="vXZ-lx-hvc" kind="modal" id="eDw-Yi-ekF"/>
+                                    <action selector="HomeTapped:" destination="a4G-5t-ZXe" eventType="touchUpInside" id="3eo-84-7Uu"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ykw-bS-sxE">
@@ -137,6 +137,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="mcO-5z-Rwe"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="assingedPTLabel" destination="Xkp-aJ-4Km" id="9EU-se-J9e"/>
                         <outlet property="changePTButton" destination="OZI-2q-zX9" id="eJh-DX-JSt"/>
@@ -144,14 +145,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UsI-Ae-frs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="687.5" y="1120.5"/>
+            <point key="canvasLocation" x="687.5" y="1118.5"/>
         </scene>
-        <!--AsignPTVC-->
+        <!--AssignVC-->
         <scene sceneID="F7W-JB-5Ig">
             <objects>
-                <viewController id="WxL-Dc-1Pz" customClass="AsignPTVC" customModule="PatientPortal" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="WxL-Dc-1Pz" customClass="AssignVC" customModule="PatientPortal" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dnQ-9e-gRc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change Assigned PT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0zv-c7-yyD">
@@ -168,7 +169,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="a4G-5t-ZXe" kind="modal" id="H7o-6g-KIR"/>
+                                    <action selector="cancelTapped:" destination="WxL-Dc-1Pz" eventType="touchUpInside" id="iqs-fF-snd"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="ioN-UW-av9">
@@ -186,7 +187,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="changePtTapped:" destination="WxL-Dc-1Pz" eventType="touchUpInside" id="wSv-dd-ziI"/>
+                                    <action selector="changePtTapped:" destination="WxL-Dc-1Pz" eventType="touchUpInside" id="UoR-9P-ZhK"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -206,7 +207,7 @@
             <objects>
                 <viewController id="CkI-RT-Iof" customClass="SignupVC" customModule="PatientPortal" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Q1U-DO-HEd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" id="QsW-FE-ekd">
@@ -279,7 +280,7 @@
             <objects>
                 <viewController id="b6q-MX-vZm" customClass="LoginVC" customModule="PatientPortal" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YJy-94-nKs" customClass="Log">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="n1m-ai-ZAL">
@@ -360,8 +361,4 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
-    <inferredMetricsTieBreakers>
-        <segue reference="eDw-Yi-ekF"/>
-        <segue reference="Sov-7L-JIS"/>
-    </inferredMetricsTieBreakers>
 </document>
