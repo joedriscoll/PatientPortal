@@ -11,12 +11,16 @@ import HealthKit
 let health:HKHealthStore = HKHealthStore()
 class ViewController: UIViewController {
     let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    var painAlert: PainLevel?
 
 
+    @IBOutlet var background: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.painAlert = PainLevel()
+        self.painAlert?.setUP(CGRectMake(20,100,300,300))
         authorizeHealthKit { (authorized,  error) -> Void in
             if authorized {
                 println("HealthKit authorization received.")
@@ -35,9 +39,6 @@ class ViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         let isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
-
-        
-        
         if (isLoggedIn != 1) {
             self.performSegueWithIdentifier("goto_login", sender: self)
         } else{
@@ -55,83 +56,10 @@ class ViewController: UIViewController {
 
 
     @IBAction func logPainTapped(sender: UIButton) {
-        let session_key = prefs.valueForKey("SESSION_KEY") as NSString
-
-        var post:NSString = "session_key=\(session_key)&data=None"
-        
-        NSLog("PostData: %@",post);
-        
-        var url:NSURL = NSURL(string: "http://localhost:8000/ptapi/logPain")!
-        
-        var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        
-        var postLength:NSString = String( postData.length )
-        
-        var request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
-        request.setValue(postLength, forHTTPHeaderField: "Content-Length")
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError)
-        
-        if ( urlData != nil ) {
-            let res = response as NSHTTPURLResponse!;
-            
-            NSLog("Response code: %ld", res.statusCode);
-            
-            if (res.statusCode >= 200 && res.statusCode < 300)
-            {
-                var responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                
-                NSLog("Response ==> %@", responseData);
-                
-                var error: NSError?
-                
-                let jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers , error: &error) as NSDictionary
-                
-                
-                let success:NSInteger = jsonData.valueForKey("success") as NSInteger
-                
-                //[jsonData[@"success"] integerValue];
-                
-                NSLog("Success: %ld", success);
-                
-                if(success == 1)
-                {
-                    var alertView:UIAlertView = UIAlertView()
-                    alertView.title = "Pain Logged"
-                    alertView.message = "Your Pain was Logged"
-                    alertView.delegate = self
-                    alertView.addButtonWithTitle("OK")
-                    alertView.show()
-                    
-                } else {
-                    var error_msg:NSString
-                    
-                    if jsonData["error_message"] as? NSString != nil {
-                        error_msg = jsonData["error_message"] as NSString
-                    } else {
-                        error_msg = "Unknown Error"
-                    }
-                    var alertView:UIAlertView = UIAlertView()
-                    alertView.title = "A Problem Occured!"
-                    alertView.message = error_msg
-                    alertView.delegate = self
-                    alertView.addButtonWithTitle("OK")
-                    alertView.show()
-                    
-                }
-                
-            }
-        }
-
+        self.painAlert?.clear()
+        self.background.addSubview(self.painAlert!)
     }
+    
     @IBAction func logoutTapped(sender: UIButton) {
         let appDomain = NSBundle.mainBundle().bundleIdentifier
         NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain!)
