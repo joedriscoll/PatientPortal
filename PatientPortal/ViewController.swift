@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.painAlert = PainLevel()
-        self.painAlert?.setUP(CGRectMake(20,100,300,300))
+        self.painAlert?.setUp(CGRectMake(20,100,300,300))
         authorizeHealthKit { (authorized,  error) -> Void in
             if authorized {
                 println("HealthKit authorization received.")

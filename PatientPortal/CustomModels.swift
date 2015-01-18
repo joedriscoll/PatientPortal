@@ -9,6 +9,8 @@
 import UIKit
 import Foundation
 
+var customColor = CustomColors()
+
 class Button: UIButton {
     
     func setUp(title:NSString,frame:CGRect){
@@ -19,13 +21,6 @@ class Button: UIButton {
         self.layer.cornerRadius = 5
 
     }
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-    // Drawing code
-    }
-    */
     
 }
 
@@ -50,7 +45,7 @@ class PainLabel: UILabel {
 }
 
 class PainLevel: UIView, SelectorDelegate {
-    
+
     var successAlertView:UIAlertView?
     var errorAlertView:UIAlertView?
     var painSlider: UISlider?
@@ -60,15 +55,21 @@ class PainLevel: UIView, SelectorDelegate {
     var boxes:[Selector]?
     var log:Button?
     var cancel:Button?
-    var painLog = PainPost()
-    
+    var painLog: PostReq?
+    var post:NSString?
+    var url:String?
+    var painP = PainProccess()
     
     func clear(){
         self.painSlider?.value = 0
         self.setStates([0,0,0,0])
     }
     
-    func setUP(frame:CGRect){
+    func setUp(frame:CGRect){
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        self.post = "session_key=\(session_key)&data=None"
+        self.url = "http://localhost:8000/ptapi/logPain"
+        self.painLog = PostReq(post:self.post!, url:self.url!)
         self.successAlertView = UIAlertView()
         self.successAlertView?.title = "Pain Logged"
         self.successAlertView?.message = "Your Pain was Logged"
@@ -108,8 +109,11 @@ class PainLevel: UIView, SelectorDelegate {
         println("Logit!")
         var states:[Float] = self.getStates()
         states.append(self.painSlider!.value)
-        painLog.update(states)
-        var success = painLog.PostPain()
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        self.post = "session_key=\(session_key)&data=\(states)"
+        self.url = "http://localhost:8000/ptapi/logPain"
+        painLog?.update(self.post!, url:self.url!)
+        var success = painLog?.Post(painP)
         //if success == 1{
          //   self.addSubview(successAlertView!)
           //  self.successAlertView?.show()
@@ -174,69 +178,10 @@ class PainLevel: UIView, SelectorDelegate {
         }
     }
     
-    class PainPost{
-        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
-        var post:NSString
-        var url:NSURL
-        var request:NSMutableURLRequest
-        var jsonData:NSDictionary?
-        var queue:NSOperationQueue?
-        var postData:NSData?
-        var postLength:NSString?
-        
-        init(){
-            println("initialized request")
-            self.post = "session_key=\(session_key)&data=None"
-            self.url = NSURL(string: "http://localhost:8000/ptapi/logPain")!
-            self.request = NSMutableURLRequest(URL: self.url)
-            self.request.HTTPMethod = "POST"
-            self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            self.request.setValue("application/json", forHTTPHeaderField: "Accept")
-            self.queue  = NSOperationQueue()
-            self.postData = self.post.dataUsingEncoding(NSASCIIStringEncoding)!
-            self.postLength = String( postData!.length )
-            
-        }
-        
-        func update(states:[Float]){
-            self.session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
-            self.post = "session_key=\(session_key)&data=\(states)"
-            self.postData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-            self.postLength = String( self.postData!.length )
-            self.url = NSURL(string: "http://localhost:8000/ptapi/logPain")!
-            self.request = NSMutableURLRequest(URL: self.url)
-            self.request.HTTPMethod = "POST"
-            self.request.HTTPBody = self.postData
-            self.request.setValue(self.postLength, forHTTPHeaderField: "Content-Length")
-            self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            self.request.setValue("application/json", forHTTPHeaderField: "Accept")
-        }
-        
-        func PostPain() -> Int {
-            var success:Int = 0
-            NSURLCache.sharedURLCache().removeAllCachedResponses()
-            NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                if (error != nil) {
-                    println("API error: \(error), \(error.userInfo)")
-                }
-                var jsonError:NSError?
-                println("hihihihihi")
-                println(data)
-                println(self.request.HTTPMethod)
-                self.jsonData = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers, error: &jsonError) as? NSDictionary
-                if (jsonError != nil) {
-                    println("Error parsing json: \(jsonError)")
-                    success = 0
-                }
-                println(self.jsonData!)
-                if (self.jsonData?.valueForKey("success") as Int == 1){
-                    success = 1
-                }
-                else{
-                    success = 0
-                }
-            })
-            return success
+    class PainProccess: Processor{
+        override func processData(data: NSDictionary) {
+            super.processData(data)
+            println("pain proccessor")
         }
     }
 }
@@ -248,7 +193,10 @@ class ExerciseAlert: UIView {
     var exerciseHalf:Button?
     var exerciseSkip:Button?
     var exerciseId: Int?
-    var ePost = EStatusPost()
+    var ePost: PostReq?
+    var post:NSString?
+    var url:String?
+    var eProc = ExProcessor()
     
     func update(name:String,setReps:String, exercise_id:Int){
         self.nameLabel?.text = name
@@ -261,6 +209,10 @@ class ExerciseAlert: UIView {
     }
     
     func setUp(frame:CGRect, name:String, setReps:String){
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        self.post = "session_key=\(session_key)&data=None"
+        self.url = "http://localhost:8000/ptapi/updateExercise"
+        self.ePost = PostReq(post: post!, url: url!)
         self.nameLabel = ExerciseLabel()
         self.nameLabel?.setUp("name",frame:CGRectMake(20, 10, 250, 30))
         self.sets = ExerciseLabel()
@@ -270,12 +222,15 @@ class ExerciseAlert: UIView {
         self.exerciseComplete = Button()
         self.exerciseComplete?.setUp("Completed",frame: CGRectMake(190, 80, 80, 30))
         self.exerciseComplete?.addTarget(self, action:"Completed:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.exerciseComplete?.backgroundColor = customColor.green
         self.exerciseSkip = Button()
         self.exerciseSkip?.setUp("Skipped",frame: CGRectMake(20, 80, 80, 30))
         self.exerciseSkip?.addTarget(self, action:"Skipped:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.exerciseSkip?.backgroundColor = customColor.red
         self.exerciseHalf = Button()
         self.exerciseHalf?.setUp("Attempted",frame: CGRectMake(105, 80, 80, 30))
         self.exerciseHalf?.addTarget(self, action:"Attempted:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.exerciseHalf?.backgroundColor = customColor.orange
         self.addSubview(exerciseComplete!)
         self.addSubview(exerciseSkip!)
         self.addSubview(exerciseHalf!)
@@ -289,103 +244,42 @@ class ExerciseAlert: UIView {
     
     func Completed(sender:Button!){
         println("Complete")
-        ePost.update(self.exerciseId!, status:2)
-        ePost.PostStatus()
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        var status = 2
+        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId)&status=\(status)"
+        ePost?.update(post!, url: url!)
+        ePost?.Post(eProc)
         self.removeFromSuperview()
         
     }
     
     func Attempted(sender:Button!){
         println("attempted")
-        ePost.update(self.exerciseId!, status:1)
-        ePost.PostStatus()
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        var status = 1
+        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId)&status=\(status)"
+        ePost?.update(post!, url: url!)
+        ePost?.Post(eProc)
         self.removeFromSuperview()
     }
     
     func Skipped(sender:Button!){
         println("skipped")
-        ePost.update(self.exerciseId!, status:0)
-        ePost.PostStatus()
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        var status = 0
+        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId)&status=\(status)"
+        ePost?.update(post!, url: url!)
+        ePost?.Post(eProc)
         self.removeFromSuperview()
     }
-    
-    class EStatusPost{
-        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
-        var post:NSString
-        var url:NSURL
-        var request:NSMutableURLRequest
-        var jsonData:NSDictionary?
-        var queue:NSOperationQueue?
-        var postData:NSData?
-        var postLength:NSString?
-        
-        init(){
-            println("initialized request")
-            self.post = "session_key=\(session_key)&data=None"
-            self.url = NSURL(string: "http://localhost:8000/ptapi/updateExercise")!
-            self.request = NSMutableURLRequest(URL: self.url)
-            self.request.HTTPMethod = "POST"
-            self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            self.request.setValue("application/json", forHTTPHeaderField: "Accept")
-            self.queue  = NSOperationQueue()
-            self.postData = self.post.dataUsingEncoding(NSASCIIStringEncoding)!
-            self.postLength = String( postData!.length )
-            
-        }
-        
-        func update(exercise_id:Int, status:Int){
-            self.session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
-            self.post = "session_key=\(session_key)&exercise_id=\(exercise_id)&status=\(status)"
-            self.postData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-            self.postLength = String( self.postData!.length )
-            self.url = NSURL(string: "http://localhost:8000/ptapi/updateExercise")!
-            self.request = NSMutableURLRequest(URL: self.url)
-            self.request.HTTPMethod = "POST"
-            self.request.HTTPBody = self.postData
-            self.request.setValue(self.postLength, forHTTPHeaderField: "Content-Length")
-            self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            self.request.setValue("application/json", forHTTPHeaderField: "Accept")
-        }
-        
-        func PostStatus() -> Int {
-            var success:Int = 0
-            NSURLCache.sharedURLCache().removeAllCachedResponses()
-            NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                if (error != nil) {
-                    println("API error: \(error), \(error.userInfo)")
-                }
-                var jsonError:NSError?
-                println("hihihihihi")
-                println(data)
-                println(self.request.HTTPMethod)
-                self.jsonData = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers, error: &jsonError) as? NSDictionary
-                if (jsonError != nil) {
-                    println("Error parsing json: \(jsonError)")
-                    success = 0
-                }
-                if (self.jsonData?.valueForKey("success") as Int == 1){
-                    success = 1
-                }
-                else{
-                    success = 0
-                }
-            })
-            return success
+
+    class ExProcessor: Processor{
+        override func processData(data: NSDictionary) {
+            super.processData(data)
+            println("hithere")
         }
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
 }
-
-
-
 
 @objc protocol SelectorDelegate {
     func didSelectSelector(state: Bool, identifier: Int, title: String);
@@ -419,10 +313,78 @@ class Selector: UIButton {
     }
     
     func onTouchUpInside(sender: UIButton) {
-        // #7
         self.selected = !self.selected;
-        // #8
         var titleString = self.titleLabel?.text
         mDelegate?.didSelectSelector(self.selected, identifier: self.tag, title: titleString!);
     }
 }
+
+
+
+class PostReq{
+    var url:NSURL
+    var request:NSMutableURLRequest
+    var jsonData:NSDictionary?
+    var queue:NSOperationQueue?
+    var postData:NSData?
+    var postLength:NSString?
+    
+    init(post:NSString, url:String){
+        self.url = NSURL(string: url)!
+        self.request = NSMutableURLRequest(URL: self.url)
+        self.request.HTTPMethod = "POST"
+        self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        self.request.setValue("application/json", forHTTPHeaderField: "Accept")
+        self.queue  = NSOperationQueue()
+        self.postData = post.dataUsingEncoding(NSASCIIStringEncoding)!
+        self.postLength = String( postData!.length )
+        
+    }
+    
+    func update(post:NSString, url:String){
+        self.postData = post.dataUsingEncoding(NSASCIIStringEncoding)!
+        self.postLength = String( self.postData!.length )
+        self.url = NSURL(string: url)!
+        self.request = NSMutableURLRequest(URL: self.url)
+        self.request.HTTPMethod = "POST"
+        self.request.HTTPBody = self.postData
+        self.request.setValue(self.postLength, forHTTPHeaderField: "Content-Length")
+        self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        self.request.setValue("application/json", forHTTPHeaderField: "Accept")
+    }
+    
+    func Post(obj:Processor) -> Int {
+        var success:Int = 0
+        println(self.request.HTTPBody)
+        NSURLCache.sharedURLCache().removeAllCachedResponses()
+        NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+            if (error != nil) {
+                println("API error: \(error), \(error.userInfo)")
+            }
+            else{
+                var jsonError:NSError?
+
+                self.jsonData = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers, error: &jsonError) as? NSDictionary
+                obj.processData(self.jsonData!)
+                if (jsonError != nil) {
+                    println("Error parsing json: \(jsonError)")
+                    success = 0
+                }
+                if (self.jsonData?.valueForKey("success") as Int == 1){
+                    success = 1
+                }
+                else{
+                    success = 0
+                }
+            }
+        })
+    return success
+    }
+}
+
+class Processor {
+    func processData(data:NSDictionary){
+        println(data)
+    }
+}
+

@@ -18,6 +18,7 @@
 		7C6FC8101A6B062D00DB00B4 /* CustomModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6FC80F1A6B062D00DB00B4 /* CustomModels.swift */; };
 		7C78DF2D1A69EA6000795A75 /* AssignVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C78DF2C1A69EA6000795A75 /* AssignVC.swift */; };
 		7C78DF311A6AEF0400795A75 /* ExerciseSVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C78DF301A6AEF0400795A75 /* ExerciseSVC.swift */; };
+		7C8140D91A6B3EE90076A7AC /* CustomColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C8140D81A6B3EE90076A7AC /* CustomColors.swift */; };
 		7CED59C41A5C71640091449C /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CED59C31A5C71640091449C /* HealthKit.framework */; };
 		7CED59C81A5F253F0091449C /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CED59C71A5F253F0091449C /* SettingsVC.swift */; };
 /* End PBXBuildFile section */
@@ -48,6 +49,7 @@
 		7C6FC80F1A6B062D00DB00B4 /* CustomModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomModels.swift; sourceTree = "<group>"; };
 		7C78DF2C1A69EA6000795A75 /* AssignVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssignVC.swift; sourceTree = "<group>"; };
 		7C78DF301A6AEF0400795A75 /* ExerciseSVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseSVC.swift; sourceTree = "<group>"; };
+		7C8140D81A6B3EE90076A7AC /* CustomColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomColors.swift; sourceTree = "<group>"; };
 		7CED59C21A5C71640091449C /* PatientPortal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PatientPortal.entitlements; sourceTree = "<group>"; };
 		7CED59C31A5C71640091449C /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		7CED59C71A5F253F0091449C /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 				7C78DF2C1A69EA6000795A75 /* AssignVC.swift */,
 				7C78DF301A6AEF0400795A75 /* ExerciseSVC.swift */,
 				7C6FC80F1A6B062D00DB00B4 /* CustomModels.swift */,
+				7C8140D81A6B3EE90076A7AC /* CustomColors.swift */,
 			);
 			path = PatientPortal;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				7C6FC8101A6B062D00DB00B4 /* CustomModels.swift in Sources */,
 				7C78DF311A6AEF0400795A75 /* ExerciseSVC.swift in Sources */,
 				7C648BB01A5B580C0067D539 /* LoginVC.swift in Sources */,
+				7C8140D91A6B3EE90076A7AC /* CustomColors.swift in Sources */,
 				7CED59C81A5F253F0091449C /* SettingsVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
