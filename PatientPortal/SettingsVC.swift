@@ -9,20 +9,51 @@
 import UIKit
 
 class SettingsVC: UIViewController {
-
+    var setReq:GetReq?
+    var set:setProc?
     
-    @IBOutlet weak var changePTButton: UIButton!
+    @IBOutlet var changePTButton: UIButton!
     let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
-    @IBOutlet weak var assingedPTLabel: UILabel!
+    @IBOutlet var assingedPTLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.getSettings()
+        setReq = GetReq(post: "?session_key=None&username=None", url: "http://localhost:8000/ptapi/settings")
+        set = setProc(but:changePTButton, lab:assingedPTLabel)
 
-        
-        // Do any additional setup after loading the view.
     }
     
+    deinit{
+        
+        println("deleted")
+    }
+    class setProc:Processor{
+        var but:UIButton
+        var lab:UILabel
+        init(but:UIButton, lab:UILabel){
+            self.but = but
+            self.lab = lab
+        }
+        deinit{
+            println("deleted setting processes")
+        }
+        override func processData(data: NSDictionary) {
+            super.processData(data)
+            let ptUsername:NSString = data.valueForKey("assigned_pt") as NSString!
+            dispatch_async(dispatch_get_main_queue()) {
+                self.lab.text = ptUsername
+            
+                if (ptUsername == "None"){
+                
+                    self.but.setTitle("Assign a Physical Therapist", forState: UIControlState.Normal)
+                }
+                else {
+                    self.but.setTitle("Change Assigned Physical Therapist", forState: UIControlState.Normal)
+                }
+            }
+        }
+    }
 
     @IBAction func HomeTapped(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -31,8 +62,6 @@ class SettingsVC: UIViewController {
         super.viewDidAppear(true)
         self.getSettings()
     }
-    
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -41,55 +70,8 @@ class SettingsVC: UIViewController {
     func getSettings(){
         let session_key:NSString = prefs.valueForKey("SESSION_KEY") as NSString
         let username:NSString = prefs.valueForKey("USERNAME") as NSString
-        var get:NSString = "?session_key=\(session_key)&username=\(username)"
-        
-        var url:NSURL = NSURL(string: "http://localhost:8000/ptapi/settings"+get)!
-        
-        var request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        println(request)
-        request.HTTPMethod = "GET"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError)
-        
-        if ( urlData != nil ) {
-            let res = response as NSHTTPURLResponse!;
-            
-            NSLog("Response code: %ld", res.statusCode);
-            
-            if (res.statusCode >= 200 && res.statusCode < 300)
-            {
-                var responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                
-                NSLog("Response ==> %@", responseData);
-                
-                var error: NSError?
-                
-                let jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers , error: &error) as NSDictionary
-                
-                
-                let ptUsername:NSString = jsonData.valueForKey("assigned_pt") as NSString
-                println(ptUsername)
-                assingedPTLabel.text = ptUsername
-                if (ptUsername == "None"){
-                    
-                    changePTButton.setTitle("Assign a Physical Therapist", forState: UIControlState.Normal)
-                }
-                else {
-                    changePTButton.setTitle("Change Assigned Physical Therapist", forState: UIControlState.Normal)
-                }
-                
-                
-                
-                //[jsonData[@"success"] integerValue];
-                
-            }
-        }
-        
-        
+        setReq?.update("?session_key=\(session_key)&username=\(username)", url: "http://localhost:8000/ptapi/settings")
+        setReq?.Get(set!)
     }
     /*
     // MARK: - Navigation

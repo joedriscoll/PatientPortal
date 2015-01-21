@@ -11,6 +11,30 @@ import Foundation
 
 var customColor = CustomColors()
 
+
+
+class blueButton:UIButton{
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.backgroundColor = customColor.firstBlue
+        self.layer.cornerRadius = 5
+        self.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+    }
+    
+}
+
+
+class redButton:UIButton{
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.backgroundColor = customColor.red
+        self.layer.cornerRadius = 5
+        self.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+    }
+    
+}
 class Button: UIButton {
     
     func setUp(title:NSString,frame:CGRect){
@@ -30,7 +54,8 @@ class ExerciseLabel: UILabel {
         self.font = UIFont.systemFontOfSize(20)
         self.text = text
         self.frame = frame
-        self.textColor = UIColor.blueColor()
+        self.textColor = UIColor.grayColor()
+        self.textAlignment = .Center
     }
 }
 
@@ -99,7 +124,7 @@ class PainLevel: UIView, SelectorDelegate {
         self.addSubview(self.cancel!)
         self.frame = frame
         self.backgroundColor = UIColor.whiteColor()
-        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.layer.borderColor = UIColor.grayColor().CGColor
         self.layer.borderWidth = 2.0
         self.layer.cornerRadius = 10
         
@@ -196,33 +221,34 @@ class ExerciseAlert: UIView {
     var ePost: PostReq?
     var post:NSString?
     var url:String?
-    var eProc = ExProcessor()
+    var eProc: ExerciseProc?
     
     func update(name:String,setReps:String, exercise_id:Int){
         self.nameLabel?.text = name
         self.sets?.text = setReps
-        self.exerciseId = exercise_id
+        self.exerciseId = exercise_id as Int
     }
     
     deinit{
         println("destroyed")
     }
     
-    func setUp(frame:CGRect, name:String, setReps:String){
+    func setUp(frame:CGRect, name:String, setReps:String, eP:ExerciseProc){
+        self.eProc = eP
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
         self.post = "session_key=\(session_key)&data=None"
-        self.url = "http://localhost:8000/ptapi/updateExercise"
+        self.url = "http://localhost:8000/ptapi/addNewInstance"
         self.ePost = PostReq(post: post!, url: url!)
         self.nameLabel = ExerciseLabel()
         self.nameLabel?.setUp("name",frame:CGRectMake(20, 10, 250, 30))
         self.sets = ExerciseLabel()
-        self.sets?.setUp(setReps, frame: CGRectMake(20, 40, 250, 30))
+        self.sets!.setUp(setReps, frame: CGRectMake(20, 40, 250, 30))
         self.addSubview(nameLabel!)
         self.addSubview(sets!)
         self.exerciseComplete = Button()
         self.exerciseComplete?.setUp("Completed",frame: CGRectMake(190, 80, 80, 30))
         self.exerciseComplete?.addTarget(self, action:"Completed:", forControlEvents: UIControlEvents.TouchUpInside)
-        self.exerciseComplete?.backgroundColor = customColor.green
+        self.exerciseComplete?.backgroundColor = customColor.firstBlue
         self.exerciseSkip = Button()
         self.exerciseSkip?.setUp("Skipped",frame: CGRectMake(20, 80, 80, 30))
         self.exerciseSkip?.addTarget(self, action:"Skipped:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -230,12 +256,12 @@ class ExerciseAlert: UIView {
         self.exerciseHalf = Button()
         self.exerciseHalf?.setUp("Attempted",frame: CGRectMake(105, 80, 80, 30))
         self.exerciseHalf?.addTarget(self, action:"Attempted:", forControlEvents: UIControlEvents.TouchUpInside)
-        self.exerciseHalf?.backgroundColor = customColor.orange
+        self.exerciseHalf?.backgroundColor = UIColor.grayColor()
         self.addSubview(exerciseComplete!)
         self.addSubview(exerciseSkip!)
         self.addSubview(exerciseHalf!)
         self.backgroundColor = UIColor.whiteColor()
-        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.layer.borderColor = UIColor.grayColor().CGColor
         self.layer.borderWidth = 2.0
         self.layer.cornerRadius = 10
         self.frame = frame
@@ -246,20 +272,23 @@ class ExerciseAlert: UIView {
         println("Complete")
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
         var status = 2
-        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId)&status=\(status)"
+        var date = eProc!.dateLabel!.text!
+        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId!)&exercise_completion=\(status)&exercise_date=\(date)"
         ePost?.update(post!, url: url!)
-        ePost?.Post(eProc)
+        ePost?.Post(eProc!)
+        eProc!.current = 1
         self.removeFromSuperview()
-        
     }
     
     func Attempted(sender:Button!){
         println("attempted")
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
         var status = 1
-        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId)&status=\(status)"
+        var date = eProc!.dateLabel!.text!
+        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId!)&exercise_completion=\(status)&exercise_date=\(date)"
         ePost?.update(post!, url: url!)
-        ePost?.Post(eProc)
+        ePost?.Post(eProc!)
+        eProc!.current = 1
         self.removeFromSuperview()
     }
     
@@ -267,19 +296,81 @@ class ExerciseAlert: UIView {
         println("skipped")
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
         var status = 0
-        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId)&status=\(status)"
+        var date = eProc!.dateLabel!.text!
+        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId!)&exercise_completion=\(status)&exercise_date=\(date)"
         ePost?.update(post!, url: url!)
-        ePost?.Post(eProc)
+        ePost?.Post(eProc!)
+        eProc!.current = 1
         self.removeFromSuperview()
     }
 
-    class ExProcessor: Processor{
-        override func processData(data: NSDictionary) {
-            super.processData(data)
-            println("hithere")
+}
+
+class ExerciseProc: Processor{
+    var eid: [Int]
+    var date:[String]
+    var items:[String]
+    var repD:[String]
+    var table:UITableView
+    var today:NSDictionary?
+    var tomorrow:NSDictionary?
+    var yesterday:NSDictionary?
+    var current = 1
+    var days:[NSDictionary]?
+    weak var dateLabel:UILabel?
+    
+    init(table:UITableView, lab:UILabel){
+        self.items = ["hi"]
+        self.repD = ["3 sets x 15 reps"]
+        self.eid = [1]
+        self.date = ["8/11"]
+        self.table = table
+        self.dateLabel = lab
+    }
+    
+    func next(){
+        if self.current < 2{
+            println("this should happen")
+            self.current = self.current + 1
+            self.items = self.days![self.current].valueForKey("exercise_name") as [String]
+            self.repD = self.days![self.current].valueForKey("reps") as [String]
+            self.eid = self.days![self.current].valueForKey("exercise_id") as [Int]
+            self.dateLabel?.text = self.days![self.current].valueForKey("date") as? String
+            self.table.reloadData()
         }
     }
+    
+    func prev(){
+        
+        if self.current > 0{
+            self.current = self.current - 1
+            self.items = self.days![self.current].valueForKey("exercise_name") as [String]
+            self.repD = self.days![self.current].valueForKey("reps") as [String]
+            self.eid = self.days![self.current].valueForKey("exercise_id") as [Int]
+            self.dateLabel?.text = self.days![self.current].valueForKey("date") as? String
+            self.table.reloadData()
+        }
+    }
+    
+    override func processData(data: NSDictionary) {
+        super.processData(data)
+        dispatch_async(dispatch_get_main_queue()) {
+            self.today = data.valueForKey("td") as? NSDictionary
+            self.tomorrow = data.valueForKey("rd") as? NSDictionary
+            self.yesterday = data.valueForKey("yd") as? NSDictionary
+            self.days = [self.yesterday!, self.today!, self.tomorrow!]
+            self.items = self.today!.valueForKey("exercise_name") as [String]
+            self.repD = self.today!.valueForKey("reps") as [String]
+            self.eid = self.today!.valueForKey("exercise_id") as [Int]
+            self.dateLabel?.text = self.today!.valueForKey("date") as? String
+            self.table.reloadData()
+            return Void()
+        }
+        
+    }
+    
 }
+
 
 @objc protocol SelectorDelegate {
     func didSelectSelector(state: Bool, identifier: Int, title: String);
@@ -328,6 +419,10 @@ class PostReq{
     var queue:NSOperationQueue?
     var postData:NSData?
     var postLength:NSString?
+    
+    deinit{
+        println("deleted requestttt")
+    }
     
     init(post:NSString, url:String){
         self.url = NSURL(string: url)!
@@ -387,4 +482,88 @@ class Processor {
         println(data)
     }
 }
+
+class asProcessor:Processor{
+    deinit{
+        println("process deleted")
+    }
+    override func processData(data: NSDictionary) {
+        super.processData(data)
+        var success:NSInteger = data.valueForKey("success") as NSInteger
+        if(success == 1)
+        {
+            NSLog("Sign Up SUCCESS");
+        } else {
+            var error_msg:NSString
+            if data["error_message"] as? NSString != nil {
+                error_msg = data["error_message"] as NSString
+            } else {
+                error_msg = "PT Username Not Found"
+            }
+        }
+    }
+}
+
+
+class GetReq{
+    var url:NSURL
+    var request:NSMutableURLRequest
+    var jsonData:NSDictionary?
+    var queue:NSOperationQueue?
+    var postData:NSData?
+    var postLength:NSString?
+    
+    deinit{
+        println("deleted Getrequestttt")
+    }
+    
+    init(post:NSString, url:String){
+        self.url = NSURL(string: url+post)!
+        self.request = NSMutableURLRequest(URL: self.url)
+        self.request.HTTPMethod = "GET"
+        self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        self.request.setValue("application/json", forHTTPHeaderField: "Accept")
+        self.queue  = NSOperationQueue()
+
+    }
+    
+    func update(post:NSString, url:String){
+        self.url = NSURL(string: url+post)!
+        self.request = NSMutableURLRequest(URL: self.url)
+        self.request.HTTPMethod = "GET"
+        self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        self.request.setValue("application/json", forHTTPHeaderField: "Accept")
+    }
+    
+    func Get(obj:Processor) -> Int {
+        var success:Int = 0
+        println(self.request.HTTPBody)
+        NSURLCache.sharedURLCache().removeAllCachedResponses()
+        NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler: { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+            if (error != nil) {
+                println("API error: \(error), \(error.userInfo)")
+            }
+            else{
+                var jsonError:NSError?
+                
+                self.jsonData = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers, error: &jsonError) as? NSDictionary
+                println(self.url)
+                obj.processData(self.jsonData!)
+                if (jsonError != nil) {
+                    println("Error parsing json: \(jsonError)")
+                    success = 0
+                }
+                if (self.jsonData?.valueForKey("success") as Int == 1){
+                    success = 1
+                }
+                else{
+                    success = 0
+                }
+            }
+        })
+        return success
+    }
+}
+
+
 

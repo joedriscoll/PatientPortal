@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     @IBOutlet var background: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     
+    @IBOutlet weak var titleBar: UINavigationItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.painAlert = PainLevel()
@@ -43,7 +44,7 @@ class ViewController: UIViewController {
             self.performSegueWithIdentifier("goto_login", sender: self)
         } else{
             let username = prefs.valueForKey("USERNAME") as NSString
-            titleLabel.text = username+"'s Patient Portal"
+            titleBar.title = username+"'s Patient Portal"
             //self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
         }
     }

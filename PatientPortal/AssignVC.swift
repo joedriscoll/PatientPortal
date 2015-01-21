@@ -11,15 +11,25 @@ import UIKit
 class AssignVC: UIViewController {
     
     @IBOutlet weak var ptUsername: UITextField!
+    var asPost:PostReq?
+    var aP:asProcessor?
     override func viewDidLoad() {
         super.viewDidLoad()
+        asPost = PostReq(post: "pt_username=None&session_key=None", url: "http://localhost:8000/ptapi/assignPT")
+        aP = asProcessor(VC: self)
         
         // Do any additional setup after loading the view.
     }
     
-    
+    deinit{
+        println("deleteassignVC")
+    }
     
     @IBAction func cancelTapped(sender: UIButton){
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func dismiss(){
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -29,80 +39,47 @@ class AssignVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    class asProcessor:Processor{
+        var alertView = UIAlertView()
+        weak var VC:AssignVC?
+        init(VC:AssignVC){
+            self.VC = VC
+            alertView = UIAlertView()
+            self.alertView.title = "Error"
+            self.alertView.delegate = self.VC!
+            self.alertView.addButtonWithTitle("OK")
+        }
+        
+        deinit{
+            println("process deleted")
+        }
+        override func processData(data: NSDictionary) {
+            super.processData(data)
+            let success:NSInteger = data.valueForKey("success") as NSInteger
+            if(success == 1)
+            {
+                NSLog("Sign Up SUCCESS");
+                self.VC?.dismiss()
+            } else {
+                if data["error_message"] as? NSString != nil {
+                    self.alertView.message = data["error_message"] as NSString
+                } else {
+                    self.alertView.message = "PT Username Not Found"
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.alertView.show()
+                }
+            }
+        }
+        }
+
     @IBAction func changePtTapped(sender: UIButton) {
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let session_key = prefs.valueForKey("SESSION_KEY") as NSString
         var ptusername:NSString = ptUsername.text
-        
-        var post:NSString = "pt_username=\(ptusername)&session_key=\(session_key)"
-        
-        NSLog("PostData: %@",post);
-        
-        var url:NSURL = NSURL(string: "http://localhost:8000/ptapi/assignPT")!
-        
-        var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        
-        var postLength:NSString = String( postData.length )
-        
-        var request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
-        request.setValue(postLength, forHTTPHeaderField: "Content-Length")
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError)
-        
-        if ( urlData != nil ) {
-            let res = response as NSHTTPURLResponse!;
-            
-            NSLog("Response code: %ld", res.statusCode);
-            
-            if (res.statusCode >= 200 && res.statusCode < 300)
-            {
-                var responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
-                
-                NSLog("Response ==> %@", responseData);
-                
-                var error: NSError?
-                
-                let jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers , error: &error) as NSDictionary
-                
-                
-                let success:NSInteger = jsonData.valueForKey("success") as NSInteger
-                
-                //[jsonData[@"success"] integerValue];
-                
-                NSLog("Success: %ld", success);
-                
-                if(success == 1)
-                {
-                    NSLog("Sign Up SUCCESS");
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                } else {
-                    var error_msg:NSString
-                    
-                    if jsonData["error_message"] as? NSString != nil {
-                        error_msg = jsonData["error_message"] as NSString
-                    } else {
-                        error_msg = "PT Username Not Found"
-                    }
-                    var alertView:UIAlertView = UIAlertView()
-                    alertView.title = "Error"
-                    alertView.message = error_msg
-                    alertView.delegate = self
-                    alertView.addButtonWithTitle("OK")
-                    alertView.show()
-                    
-                }
-                
+        asPost?.update("pt_username=\(ptusername)&session_key=\(session_key)", url: "http://localhost:8000/ptapi/assignPT")
+        asPost?.Post(aP!)
             }
-        }
-    }
     
     
     
