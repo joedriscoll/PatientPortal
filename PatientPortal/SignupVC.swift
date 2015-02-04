@@ -14,6 +14,7 @@ class SignupVC: UIViewController {
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet weak var txtConfirm: UITextField!
     @IBOutlet weak var txtEmail: UITextField!
+    var c = Connect()
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,7 +26,7 @@ class SignupVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    
     @IBAction func signupTapped(sender: UIButton) {
         var username:NSString = txtUsername.text as NSString
         var password:NSString = txtPassword.text as NSString
@@ -54,7 +55,7 @@ class SignupVC: UIViewController {
             
             NSLog("PostData: %@",post);
             
-            var url:NSURL = NSURL(string: "http://localhost:8000/ptapi/register")!
+            var url:NSURL = NSURL(string: c.ip+"/ptapi/register")!
             
             var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
             

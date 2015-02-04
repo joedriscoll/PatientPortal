@@ -11,7 +11,7 @@ import UIKit
 class SettingsVC: UIViewController {
     var setReq:GetReq?
     var set:setProc?
-    
+    var c = Connect()
     @IBOutlet var changePTButton: UIButton!
     let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
@@ -19,7 +19,7 @@ class SettingsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.getSettings()
-        setReq = GetReq(post: "?session_key=None&username=None", url: "http://localhost:8000/ptapi/settings")
+        setReq = GetReq(post: "?session_key=None&username=None", url: c.ip+"/ptapi/settings")
         set = setProc(but:changePTButton, lab:assingedPTLabel)
 
     }
@@ -70,7 +70,7 @@ class SettingsVC: UIViewController {
     func getSettings(){
         let session_key:NSString = prefs.valueForKey("SESSION_KEY") as NSString
         let username:NSString = prefs.valueForKey("USERNAME") as NSString
-        setReq?.update("?session_key=\(session_key)&username=\(username)", url: "http://localhost:8000/ptapi/settings")
+        setReq?.update("?session_key=\(session_key)&username=\(username)", url: c.ip+"/ptapi/settings")
         setReq?.Get(set!)
     }
     /*

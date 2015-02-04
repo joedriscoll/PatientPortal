@@ -13,9 +13,10 @@ class AssignVC: UIViewController {
     @IBOutlet weak var ptUsername: UITextField!
     var asPost:PostReq?
     var aP:asProcessor?
+    var c:Connect = Connect()
     override func viewDidLoad() {
         super.viewDidLoad()
-        asPost = PostReq(post: "pt_username=None&session_key=None", url: "http://localhost:8000/ptapi/assignPT")
+        asPost = PostReq(post: "pt_username=None&session_key=None", url: self.c.ip + "/ptapi/assignPT")
         aP = asProcessor(VC: self)
         
         // Do any additional setup after loading the view.
@@ -77,7 +78,7 @@ class AssignVC: UIViewController {
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         let session_key = prefs.valueForKey("SESSION_KEY") as NSString
         var ptusername:NSString = ptUsername.text
-        asPost?.update("pt_username=\(ptusername)&session_key=\(session_key)", url: "http://localhost:8000/ptapi/assignPT")
+        asPost?.update("pt_username=\(ptusername)&session_key=\(session_key)", url: c.ip+"/ptapi/assignPT")
         asPost?.Post(aP!)
             }
     

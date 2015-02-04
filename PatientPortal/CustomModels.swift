@@ -11,8 +11,11 @@ import Foundation
 
 var customColor = CustomColors()
 
+class Connect {
+    let ip:NSString = "http://54.200.62.58"
+}
 
-
+var c = Connect()
 class blueButton:UIButton{
     
     required init(coder aDecoder: NSCoder) {
@@ -65,7 +68,7 @@ class PainLabel: UILabel {
         self.font = UIFont.systemFontOfSize(18)
         self.text = text
         self.frame = frame
-        self.textColor = UIColor.lightGrayColor()
+        self.textColor = UIColor.blackColor()
     }
 }
 
@@ -87,13 +90,14 @@ class PainLevel: UIView, SelectorDelegate {
     
     func clear(){
         self.painSlider?.value = 0
+        self.painSlider?.tintColor = customColor.firstBlue
         self.setStates([0,0,0,0])
     }
     
     func setUp(frame:CGRect){
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
         self.post = "session_key=\(session_key)&data=None"
-        self.url = "http://localhost:8000/ptapi/logPain"
+        self.url = c.ip+"/ptapi/logPain"
         self.painLog = PostReq(post:self.post!, url:self.url!)
         self.successAlertView = UIAlertView()
         self.successAlertView?.title = "Pain Logged"
@@ -117,10 +121,12 @@ class PainLevel: UIView, SelectorDelegate {
         self.log = Button()
         self.log?.setUp("Log Pain", frame: CGRectMake(180, 170, 100, 30))
         self.log?.addTarget(self, action:"logTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.log?.backgroundColor = customColor.red
         self.addSubview(self.log!)
         self.cancel = Button()
         self.cancel?.setUp("Cancel", frame: CGRectMake(20, 170, 100, 30))
         self.cancel?.addTarget(self, action:"cancelTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        //self.cancel?.backgroundColor = customColor.firstBlue
         self.addSubview(self.cancel!)
         self.frame = frame
         self.backgroundColor = UIColor.whiteColor()
@@ -136,7 +142,7 @@ class PainLevel: UIView, SelectorDelegate {
         states.append(self.painSlider!.value)
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
         self.post = "session_key=\(session_key)&data=\(states)"
-        self.url = "http://localhost:8000/ptapi/logPain"
+        self.url = c.ip+"/ptapi/logPain"
         painLog?.update(self.post!, url:self.url!)
         var success = painLog?.Post(painP)
         //if success == 1{
@@ -237,7 +243,7 @@ class ExerciseAlert: UIView {
         self.eProc = eP
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
         self.post = "session_key=\(session_key)&data=None"
-        self.url = "http://localhost:8000/ptapi/addNewInstance"
+        self.url = c.ip+"/ptapi/addNewInstance"
         self.ePost = PostReq(post: post!, url: url!)
         self.nameLabel = ExerciseLabel()
         self.nameLabel?.setUp("name",frame:CGRectMake(20, 10, 250, 30))
@@ -399,8 +405,8 @@ class Selector: UIButton {
     
     func applyStyle() {
         self.titleLabel?.font = UIFont.systemFontOfSize(15)
-        self.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal);
-        self.setTitleColor(UIColor.redColor(), forState: UIControlState.Selected);
+        self.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal);
+        self.setTitleColor(customColor.firstBlue, forState: UIControlState.Selected);
     }
     
     func onTouchUpInside(sender: UIButton) {

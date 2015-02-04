@@ -9,6 +9,9 @@
 import UIKit
 import HealthKit
 let health:HKHealthStore = HKHealthStore()
+let stepQuantityType = HKQuantityType.quantityTypeForIdentifier(
+    HKQuantityTypeIdentifierStepCount)
+
 class ViewController: UIViewController {
     let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var painAlert: PainLevel?
@@ -19,9 +22,21 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var titleBar: UINavigationItem!
     override func viewDidLoad() {
+        health.enableBackgroundDeliveryForType(stepQuantityType, frequency: HKUpdateFrequency.Hourly, withCompletion: {(success: Bool, error: NSError!) in
+            if success{
+                println("Enabled background delivery of step changes")
+            } else {
+                if let theError = error{
+                    print("Failed to enable background delivery of weight changes. ")
+                    println("Error = \(theError)")
+                }
+            }
+            
+        })
+        
         super.viewDidLoad()
         self.painAlert = PainLevel()
-        self.painAlert?.setUp(CGRectMake(20,100,300,300))
+        self.painAlert?.setUp(CGRectMake(20,100,300,230))
         authorizeHealthKit { (authorized,  error) -> Void in
             if authorized {
                 println("HealthKit authorization received.")

@@ -18,12 +18,13 @@ class ExerciseSVC: UIViewController {
     var ePost:PostReq?
     var eAlert:ExerciseAlert?
     var eProc:ExerciseProc?
+    var c = Connect()
     override func viewDidLoad() {
         super.viewDidLoad()
         eAlert = ExerciseAlert()
         
-        self.eQuest = GetReq(post: "?session_key=None", url:"http://localhost:8000/ptapi/getExercisesForPatient")
-        self.ePost = PostReq(post:"?session_key=None&exericse_id=None&exercise_date=None&exercise_completion=None", url: "http://localhost:8000/ptapi/addNewInstance")
+        self.eQuest = GetReq(post: "?session_key=None", url:c.ip+"/ptapi/getExercisesForPatient")
+        self.ePost = PostReq(post:"?session_key=None&exericse_id=None&exercise_date=None&exercise_completion=None", url: c.ip+"/ptapi/addNewInstance")
         eProc = ExerciseProc(table: exerciseTable, lab:dateLabel)
         eAlert?.setUp(CGRectMake(30,150,300,130), name:"hi",setReps:"There it is", eP:self.eProc!)
         dateLabel.textColor = UIColor.darkGrayColor()
@@ -32,7 +33,7 @@ class ExerciseSVC: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
-        self.eQuest?.update("?session_key=\(session_key)", url: "http://localhost:8000/ptapi/getExercisesForPatient")
+        self.eQuest?.update("?session_key=\(session_key)", url: c.ip+"/ptapi/getExercisesForPatient")
         self.eQuest?.Get(self.eProc!)
     }
 
