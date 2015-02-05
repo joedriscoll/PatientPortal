@@ -34,6 +34,7 @@ class ViewController: UIViewController {
         }
         self.hk.backgroundHealth()
         self.hk.query()
+        self.hk.queryColl()
     
     }
     

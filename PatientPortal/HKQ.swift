@@ -35,18 +35,89 @@ class HKQ {
         let nowDate: NSDate = NSDate()
         
         let endDate: NSDate = nowDate
-        let starDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitHour, value: -1, toDate: endDate, options: NSCalendarOptions.allZeros)!
+        let starDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitHour, value: -24, toDate: endDate, options: NSCalendarOptions.allZeros)!
         
         return (starDate, endDate)
     }
 
+    func queryColl(){
+        var (starDate: NSDate, endDate: NSDate) = self.datesFromToday()
+        
+        var predicate: NSPredicate = HKQuery.predicateForSamplesWithStartDate(starDate, endDate: endDate, options: HKQueryOptions.StrictStartDate)
+        
+        var hour = NSDateComponents()
+        hour.hour = 1
+        
+        var query:HKStatisticsCollectionQuery = HKStatisticsCollectionQuery(quantityType: stepQuantityType, quantitySamplePredicate: predicate, options: HKStatisticsOptions.CumulativeSum, anchorDate: endDate, intervalComponents: hour)
+        query.initialResultsHandler = {
+            query, results, error in
+            
+            if error != nil {
+                // Perform proper error handling here
+                println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
+                abort()
+            }
+            let endDate = NSDate()
+            let calendar = NSCalendar.currentCalendar()
+
+            let startDate =
+            calendar.dateByAddingUnit(.MonthCalendarUnit,value: -1, toDate: endDate, options: nil)
+            
+            // Plot the weekly step counts over the past 3 months
+            results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
+                statistics, stop in
+                if let quantity = statistics.sumQuantity() {
+                    let date = statistics.startDate
+                    let value = quantity.doubleValueForUnit(HKUnit.countUnit())
+                    println(date)
+                    println(value)
+                    println("there is is")
+                    
+                }
+                
+            }
+        }
+        
+        query.statisticsUpdateHandler = {
+            query, stats, results, error in
+            
+            if error != nil {
+                // Perform proper error handling here
+                println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
+                abort()
+            }
+            let endDate = NSDate()
+            let calendar = NSCalendar.currentCalendar()
+            
+            let startDate =
+            calendar.dateByAddingUnit(.MonthCalendarUnit,value: -1, toDate: endDate, options: nil)
+            
+            // Plot the weekly step counts over the past 3 months
+            results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
+                statistics, stop in
+                if let quantity = statistics.sumQuantity() {
+                    let date = statistics.startDate
+                    let value = quantity.doubleValueForUnit(HKUnit.countUnit())
+                    println(date)
+                    println(value)
+                    println("there is is")
+                    
+                }
+                
+            }
+        }
+        health.executeQuery(query)
+    }
+    
+        
+        
     
     func query(){
-        let (starDate: NSDate, endDate: NSDate) = self.datesFromToday()
+        var (starDate: NSDate, endDate: NSDate) = self.datesFromToday()
         
-        let predicate: NSPredicate = HKQuery.predicateForSamplesWithStartDate(starDate, endDate: endDate, options: HKQueryOptions.StrictStartDate)
+        var predicate: NSPredicate = HKQuery.predicateForSamplesWithStartDate(starDate, endDate: endDate, options: HKQueryOptions.StrictStartDate)
         
-        let query: HKStatisticsQuery = HKStatisticsQuery(quantityType: stepQuantityType, quantitySamplePredicate: predicate, options: HKStatisticsOptions.CumulativeSum) {
+        var query: HKStatisticsQuery = HKStatisticsQuery(quantityType: stepQuantityType, quantitySamplePredicate: predicate, options: HKStatisticsOptions.CumulativeSum) {
             (_query, result, error) -> Void in
             
             println(result)
