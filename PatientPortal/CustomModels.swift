@@ -13,6 +13,7 @@ var customColor = CustomColors()
 
 class Connect {
     let ip:NSString = "http://54.200.62.58"
+    //let ip:NSString = "http://localhost:8000"
 }
 
 var c = Connect()
@@ -58,6 +59,17 @@ class ExerciseLabel: UILabel {
         self.text = text
         self.frame = frame
         self.textColor = UIColor.grayColor()
+        self.textAlignment = .Center
+    }
+}
+
+class ALabel: UILabel {
+    
+    func setUp(text:String,frame:CGRect){
+        self.font = UIFont.systemFontOfSize(16)
+        self.text = text
+        self.frame = frame
+        self.textColor = UIColor.blackColor()
         self.textAlignment = .Center
     }
 }
@@ -217,6 +229,46 @@ class PainLevel: UIView, SelectorDelegate {
     }
 }
 
+class AchieveAlert: UIView {
+    
+    var nameLabel:ALabel?
+    var descriptLabel:ALabel?
+    var ok:Button?
+    
+    func update(name:String, des:String){
+        self.nameLabel?.text = name
+        self.descriptLabel?.text = des
+        
+    }
+    
+    func setUp(frame:CGRect, name:String, des:String, aP:AchProc){
+        self.nameLabel = ALabel()
+        self.nameLabel?.setUp("name",frame:CGRectMake(20, 10, 250, 30))
+        self.descriptLabel = ALabel()
+        self.descriptLabel?.setUp("desc", frame:CGRectMake(20, 35, 250, 40))
+        self.addSubview(nameLabel!)
+        self.addSubview(descriptLabel!)
+        self.ok = Button()
+        self.ok?.setUp("OK",frame: CGRectMake(50, 80, 200, 30))
+        self.ok?.addTarget(self, action:"done:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.ok?.backgroundColor = customColor.firstBlue
+        self.addSubview(self.ok!)
+        self.backgroundColor = UIColor.whiteColor()
+        self.layer.borderColor = UIColor.grayColor().CGColor
+        self.layer.borderWidth = 2.0
+        self.layer.cornerRadius = 10
+        self.frame = frame
+
+        
+    }
+    
+    func done(sender:UIButton){
+        self.removeFromSuperview()
+    }
+}
+
+
+
 class ExerciseAlert: UIView {
     var nameLabel:ExerciseLabel?
     var sets:ExerciseLabel?
@@ -312,12 +364,35 @@ class ExerciseAlert: UIView {
 
 }
 
+class AchProc: Processor{
+    var items:[String]
+    var nameToD:NSDictionary?
+    var complete:[String]
+    weak var table:UITableView?
+
+    init(table:UITableView){
+        self.items = ["hi"]
+        self.complete = []
+        self.table = table
+    }
+    override func processData(data: NSDictionary) {
+        super.processData(data)
+        dispatch_async(dispatch_get_main_queue()) {
+            self.nameToD = data.valueForKey("nameToD") as? NSDictionary
+            self.complete = data.valueForKey("complete") as [String]
+            self.items = data.valueForKey("complete") as [String]
+            self.table!.reloadData()
+            return Void()
+        }
+    }
+}
+
 class ExerciseProc: Processor{
     var eid: [Int]
     var date:[String]
     var items:[String]
     var repD:[String]
-    var table:UITableView
+    weak var table:UITableView?
     var today:NSDictionary?
     var tomorrow:NSDictionary?
     var yesterday:NSDictionary?
@@ -326,7 +401,7 @@ class ExerciseProc: Processor{
     weak var dateLabel:UILabel?
     
     init(table:UITableView, lab:UILabel){
-        self.items = ["hi"]
+        self.items = []
         self.repD = ["3 sets x 15 reps"]
         self.eid = [1]
         self.date = ["8/11"]
@@ -342,7 +417,7 @@ class ExerciseProc: Processor{
             self.repD = self.days![self.current].valueForKey("reps") as [String]
             self.eid = self.days![self.current].valueForKey("exercise_id") as [Int]
             self.dateLabel?.text = self.days![self.current].valueForKey("date") as? String
-            self.table.reloadData()
+            self.table!.reloadData()
         }
     }
     
@@ -354,7 +429,7 @@ class ExerciseProc: Processor{
             self.repD = self.days![self.current].valueForKey("reps") as [String]
             self.eid = self.days![self.current].valueForKey("exercise_id") as [Int]
             self.dateLabel?.text = self.days![self.current].valueForKey("date") as? String
-            self.table.reloadData()
+            self.table!.reloadData()
         }
     }
     
@@ -369,7 +444,7 @@ class ExerciseProc: Processor{
             self.repD = self.today!.valueForKey("reps") as [String]
             self.eid = self.today!.valueForKey("exercise_id") as [Int]
             self.dateLabel?.text = self.today!.valueForKey("date") as? String
-            self.table.reloadData()
+            self.table!.reloadData()
             return Void()
         }
         
@@ -397,6 +472,7 @@ class Selector: UIButton {
         self.applyStyle();
         self.setTitle(title, forState: UIControlState.Normal);
         self.addTarget(self, action: "onTouchUpInside:", forControlEvents: UIControlEvents.TouchUpInside);
+        println("created a selector")
     }
     
     func adjustEdgeInsets() {
@@ -466,6 +542,8 @@ class PostReq{
                 var jsonError:NSError?
 
                 self.jsonData = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers, error: &jsonError) as? NSDictionary
+                println(error)
+                println("hihihi")
                 obj.processData(self.jsonData!)
                 if (jsonError != nil) {
                     println("Error parsing json: \(jsonError)")

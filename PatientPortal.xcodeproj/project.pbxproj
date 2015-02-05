@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C5507041A83D8A30052F4C6 /* HKQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5507031A83D8A30052F4C6 /* HKQ.swift */; };
+		7C5929FD1A82CE2F00FE3FCF /* AchievementsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5929FC1A82CE2F00FE3FCF /* AchievementsVC.swift */; };
 		7C648B901A5B51F80067D539 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C648B8F1A5B51F80067D539 /* AppDelegate.swift */; };
 		7C648B921A5B51F80067D539 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C648B911A5B51F80067D539 /* ViewController.swift */; };
 		7C648B951A5B51F80067D539 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C648B931A5B51F80067D539 /* Main.storyboard */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7C5507031A83D8A30052F4C6 /* HKQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HKQ.swift; sourceTree = "<group>"; };
+		7C5929FC1A82CE2F00FE3FCF /* AchievementsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementsVC.swift; sourceTree = "<group>"; };
 		7C648B8A1A5B51F80067D539 /* PatientPortal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PatientPortal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C648B8E1A5B51F80067D539 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C648B8F1A5B51F80067D539 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +114,8 @@
 				7C78DF301A6AEF0400795A75 /* ExerciseSVC.swift */,
 				7C6FC80F1A6B062D00DB00B4 /* CustomModels.swift */,
 				7C8140D81A6B3EE90076A7AC /* CustomColors.swift */,
+				7C5929FC1A82CE2F00FE3FCF /* AchievementsVC.swift */,
+				7C5507031A83D8A30052F4C6 /* HKQ.swift */,
 			);
 			path = PatientPortal;
 			sourceTree = "<group>";
@@ -252,6 +258,8 @@
 				7C78DF2D1A69EA6000795A75 /* AssignVC.swift in Sources */,
 				7C648B921A5B51F80067D539 /* ViewController.swift in Sources */,
 				7C648B901A5B51F80067D539 /* AppDelegate.swift in Sources */,
+				7C5929FD1A82CE2F00FE3FCF /* AchievementsVC.swift in Sources */,
+				7C5507041A83D8A30052F4C6 /* HKQ.swift in Sources */,
 				7C6FC8101A6B062D00DB00B4 /* CustomModels.swift in Sources */,
 				7C78DF311A6AEF0400795A75 /* ExerciseSVC.swift in Sources */,
 				7C648BB01A5B580C0067D539 /* LoginVC.swift in Sources */,
