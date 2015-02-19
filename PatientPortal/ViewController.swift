@@ -32,8 +32,9 @@ class ViewController: UIViewController {
             
             }
         }
+        println(NSDate())
         self.hk.backgroundHealth()
-        self.hk.query()
+        //self.hk.query()
         self.hk.queryColl()
     
     }

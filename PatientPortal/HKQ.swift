@@ -10,9 +10,12 @@ import UIKit
 import HealthKit
 
 class HKQ {
+    var c = Connect()
     let health:HKHealthStore = HKHealthStore()
     let stepQuantityType = HKQuantityType.quantityTypeForIdentifier(
         HKQuantityTypeIdentifierStepCount)
+    var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+
     
     func backgroundHealth(){
         health.enableBackgroundDeliveryForType(stepQuantityType, frequency: HKUpdateFrequency.Hourly, withCompletion: {(success: Bool, error: NSError!) in
@@ -24,107 +27,109 @@ class HKQ {
                     println("Error = \(theError)")
                 }
             }
-            
         })
     }
     
     func datesFromToday() -> (NSDate, NSDate)
     {
         let calendar: NSCalendar = NSCalendar.currentCalendar()
-        
-        let nowDate: NSDate = NSDate()
-        
-        let endDate: NSDate = nowDate
-        let starDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitHour, value: -24, toDate: endDate, options: NSCalendarOptions.allZeros)!
-        
+        var nowDate: NSDate = NSDate()
+        var components = calendar.components(.YearCalendarUnit | .MonthCalendarUnit | .DayCalendarUnit | .HourCalendarUnit | .MinuteCalendarUnit , fromDate: nowDate)
+        components.minute = 0
+        var endDate = calendar.dateFromComponents(components)!
+        var starDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitHour, value: -24, toDate: endDate, options: NSCalendarOptions.allZeros)!
         return (starDate, endDate)
     }
 
     func queryColl(){
+        var format = NSDateFormatter()
+        format.dateFormat  = "yyyy-MM-dd"
+        var hourformat = NSDateFormatter()
+        hourformat.dateFormat = "HH"
+        var hPost = PostReq(post: "steps=None&session_key=None", url: c.ip+"/ptapi/addsteps")
+        var proc = Processor()
         var (starDate: NSDate, endDate: NSDate) = self.datesFromToday()
-        
         var predicate: NSPredicate = HKQuery.predicateForSamplesWithStartDate(starDate, endDate: endDate, options: HKQueryOptions.StrictStartDate)
-        
         var hour = NSDateComponents()
         hour.hour = 1
-        
         var query:HKStatisticsCollectionQuery = HKStatisticsCollectionQuery(quantityType: stepQuantityType, quantitySamplePredicate: predicate, options: HKStatisticsOptions.CumulativeSum, anchorDate: endDate, intervalComponents: hour)
         query.initialResultsHandler = {
             query, results, error in
-            
             if error != nil {
                 // Perform proper error handling here
                 println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
                 abort()
             }
-            let endDate = NSDate()
+            var endDate = NSDate()
             let calendar = NSCalendar.currentCalendar()
-
+            var dateValue:[NSMutableDictionary] = []
             let startDate =
-            calendar.dateByAddingUnit(.MonthCalendarUnit,value: -1, toDate: endDate, options: nil)
-            
-            // Plot the weekly step counts over the past 3 months
+            calendar.dateByAddingUnit(.DayCalendarUnit,value: -5, toDate: endDate, options: nil)
             results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
                 statistics, stop in
                 if let quantity = statistics.sumQuantity() {
+                    let datadic = NSMutableDictionary()
                     let date = statistics.startDate
                     let value = quantity.doubleValueForUnit(HKUnit.countUnit())
-                    println(date)
-                    println(value)
-                    println("there is is")
-                    
+                    datadic.setValue(format.stringFromDate(date), forKey: "date")
+                    datadic.setValue(String(Int(value)), forKey: "steps")
+                    datadic.setValue(hourformat.stringFromDate(date), forKey: "hour")
+                    dateValue.append(datadic)
                 }
-                
             }
+            println(dateValue)
+            //hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
+            //hPost.Post(proc)
         }
         
         query.statisticsUpdateHandler = {
             query, stats, results, error in
-            
             if error != nil {
                 // Perform proper error handling here
                 println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
                 abort()
             }
+            println("running")
             let endDate = NSDate()
             let calendar = NSCalendar.currentCalendar()
-            
+            var format = NSDateFormatter()
+            format.dateFormat  = "yyyy-MM-dd-HH"
+            var dateValue:[NSMutableDictionary] = []
             let startDate =
-            calendar.dateByAddingUnit(.MonthCalendarUnit,value: -1, toDate: endDate, options: nil)
-            
-            // Plot the weekly step counts over the past 3 months
+            calendar.dateByAddingUnit(.DayCalendarUnit,value: -5, toDate: endDate, options: nil)
             results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
                 statistics, stop in
                 if let quantity = statistics.sumQuantity() {
+                    let datadic = NSMutableDictionary()
                     let date = statistics.startDate
                     let value = quantity.doubleValueForUnit(HKUnit.countUnit())
-                    println(date)
-                    println(value)
-                    println("there is is")
-                    
+                    datadic.setValue(format.stringFromDate(date), forKey: "date")
+                    datadic.setValue(String(Int(value)), forKey: "steps")
+                    datadic.setValue(hourformat.stringFromDate(date), forKey: "hour")
+                    dateValue.append(datadic)
                 }
-                
             }
+            println(dateValue)
+            //hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
+            //hPost.Post(proc)
         }
         health.executeQuery(query)
     }
     
-        
-        
     
     func query(){
         var (starDate: NSDate, endDate: NSDate) = self.datesFromToday()
-        
+        println("running quu")
+        println(starDate)
+        println(endDate)
         var predicate: NSPredicate = HKQuery.predicateForSamplesWithStartDate(starDate, endDate: endDate, options: HKQueryOptions.StrictStartDate)
-        
+        println(predicate)
         var query: HKStatisticsQuery = HKStatisticsQuery(quantityType: stepQuantityType, quantitySamplePredicate: predicate, options: HKStatisticsOptions.CumulativeSum) {
             (_query, result, error) -> Void in
-            
+            println(error)
             println(result)
             println(_query)
             println(result.sumQuantity())
-            println("hihihi")
-            
         }
         health.executeQuery(query)
     }
