@@ -33,7 +33,9 @@ class ExerciseSVC: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
-        self.eQuest?.update("?session_key=\(session_key)", url: c.ip+"/ptapi/getExercisesForPatient")
+        var format = NSDateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        self.eQuest?.update("?session_key=\(session_key)&date=\(format.stringFromDate(NSDate()))", url: c.ip+"/ptapi/getExercisesForPatient")
         self.eQuest?.Get(self.eProc!)
     }
 

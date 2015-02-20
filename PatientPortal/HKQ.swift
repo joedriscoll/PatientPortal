@@ -92,8 +92,6 @@ class HKQ {
             println("running")
             let endDate = NSDate()
             let calendar = NSCalendar.currentCalendar()
-            var format = NSDateFormatter()
-            format.dateFormat  = "yyyy-MM-dd-HH"
             var dateValue:[NSMutableDictionary] = []
             let startDate =
             calendar.dateByAddingUnit(.DayCalendarUnit,value: -5, toDate: endDate, options: nil)

@@ -12,8 +12,8 @@ import Foundation
 var customColor = CustomColors()
 
 class Connect {
-    let ip:NSString = "http://54.200.62.58"
-    //let ip:NSString = "http://localhost:8000"
+    //let ip:NSString = "http://54.200.62.58"
+    let ip:NSString = "http://localhost:8000"
 }
 
 var c = Connect()
@@ -153,7 +153,11 @@ class PainLevel: UIView, SelectorDelegate {
         var states:[Float] = self.getStates()
         states.append(self.painSlider!.value)
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
-        self.post = "session_key=\(session_key)&data=\(states)"
+        var format = NSDateFormatter()
+        format.dateFormat  = "yyyy-MM-dd"
+        var hour = NSDateFormatter()
+        hour.dateFormat = "HH"
+        self.post = "session_key=\(session_key)&time=\(format.stringFromDate((NSDate())))&hour=\(hour.stringFromDate(NSDate()))&data=\(states)"
         self.url = c.ip+"/ptapi/logPain"
         painLog?.update(self.post!, url:self.url!)
         var success = painLog?.Post(painP)
@@ -323,7 +327,6 @@ class ExerciseAlert: UIView {
         self.layer.borderWidth = 2.0
         self.layer.cornerRadius = 10
         self.frame = frame
-        
     }
     
     func Completed(sender:Button!){
@@ -331,7 +334,9 @@ class ExerciseAlert: UIView {
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
         var status = 2
         var date = eProc!.dateLabel!.text!
-        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId!)&exercise_completion=\(status)&exercise_date=\(date)"
+        var format = NSDateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId!)&exercise_completion=\(status)&exercise_date=\(date)&date=\(format.stringFromDate(NSDate()))"
         ePost?.update(post!, url: url!)
         ePost?.Post(eProc!)
         eProc!.current = 1
