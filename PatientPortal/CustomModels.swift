@@ -58,7 +58,7 @@ class ExerciseLabel: UILabel {
         self.font = UIFont.systemFontOfSize(20)
         self.text = text
         self.frame = frame
-        self.textColor = UIColor.grayColor()
+        self.textColor = UIColor.blackColor()
         self.textAlignment = .Center
     }
 }
@@ -376,7 +376,7 @@ class AchProc: Processor{
     weak var table:UITableView?
 
     init(table:UITableView){
-        self.items = ["hi"]
+        self.items = []
         self.complete = []
         self.table = table
     }
@@ -397,6 +397,7 @@ class ExerciseProc: Processor{
     var date:[String]
     var items:[String]
     var repD:[String]
+    var comp:[Int]
     weak var table:UITableView?
     var today:NSDictionary?
     var tomorrow:NSDictionary?
@@ -410,6 +411,7 @@ class ExerciseProc: Processor{
         self.repD = ["3 sets x 15 reps"]
         self.eid = [1]
         self.date = ["8/11"]
+        self.comp = [1]
         self.table = table
         self.dateLabel = lab
     }
@@ -421,6 +423,7 @@ class ExerciseProc: Processor{
             self.items = self.days![self.current].valueForKey("exercise_name") as [String]
             self.repD = self.days![self.current].valueForKey("reps") as [String]
             self.eid = self.days![self.current].valueForKey("exercise_id") as [Int]
+            self.comp = self.days![self.current].valueForKey("completion") as [Int]
             self.dateLabel?.text = self.days![self.current].valueForKey("date") as? String
             self.table!.reloadData()
         }
@@ -433,6 +436,7 @@ class ExerciseProc: Processor{
             self.items = self.days![self.current].valueForKey("exercise_name") as [String]
             self.repD = self.days![self.current].valueForKey("reps") as [String]
             self.eid = self.days![self.current].valueForKey("exercise_id") as [Int]
+            self.comp = self.days![self.current].valueForKey("completion") as [Int]
             self.dateLabel?.text = self.days![self.current].valueForKey("date") as? String
             self.table!.reloadData()
         }
@@ -448,6 +452,7 @@ class ExerciseProc: Processor{
             self.items = self.today!.valueForKey("exercise_name") as [String]
             self.repD = self.today!.valueForKey("reps") as [String]
             self.eid = self.today!.valueForKey("exercise_id") as [Int]
+            self.comp = self.today!.valueForKey("completion") as [Int]
             self.dateLabel?.text = self.today!.valueForKey("date") as? String
             self.table!.reloadData()
             return Void()

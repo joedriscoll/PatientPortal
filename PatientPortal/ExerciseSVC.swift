@@ -69,6 +69,15 @@ class ExerciseSVC: UIViewController {
             self.cell = UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "cell")
         }
         cell!.textLabel?.text = eProc!.items[indexPath.row]
+        if eProc?.comp[indexPath.row] == 0{
+            cell!.textLabel?.textColor = customColor.red
+        }
+        if eProc?.comp[indexPath.row] == 1{
+            cell!.textLabel?.textColor = UIColor.grayColor()
+        }
+        if eProc?.comp[indexPath.row] == 2{
+            cell!.textLabel?.textColor = customColor.firstBlue
+        }
         return cell!
     }
     
