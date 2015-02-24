@@ -8,7 +8,7 @@
 
 import UIKit
 class ViewController: UIViewController {
-    var hk = HKQ()
+    //var hk = HKQ()
     let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var painAlert: PainLevel?
 
@@ -19,23 +19,23 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        hk.authorizeHealthKit { (authorized,  error) -> Void in
-            if authorized {
-                println("HealthKit authorization received.")
-            }
-            else
-            {
-                println("HealthKit authorization denied!")
-                if error != nil {
-                    println("\(error)")
-                }
-            
-            }
-        }
+        //hk.authorizeHealthKit { (authorized,  error) -> Void in
+        //    if authorized {
+        //        println("HealthKit authorization received.")
+        //    }
+        //    else
+        //    {
+        //        println("HealthKit authorization denied!")
+        //        if error != nil {
+        //            println("\(error)")
+        //        }
+        //
+        //   }
+        //}
         println(NSDate())
-        self.hk.backgroundHealth()
+        //self.hk.backgroundHealth()
         //self.hk.query()
-        self.hk.queryColl()
+        //self.hk.queryColl()
     
     }
     
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
             self.performSegueWithIdentifier("goto_login", sender: self)
         } else{
             self.painAlert = PainLevel()
-            self.painAlert?.setUp(CGRectMake(20,100,300,230))
+            self.painAlert?.setUp(CGRectMake(self.background.frame.width * 0.025,100,self.background.frame.width * 0.95,230))
             let username = prefs.valueForKey("USERNAME") as NSString
             titleBar.title = username+"'s Patient Portal"
             //self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString

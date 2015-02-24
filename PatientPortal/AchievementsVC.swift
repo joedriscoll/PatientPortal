@@ -23,7 +23,7 @@ class AchievementsVC: UIViewController {
         super.viewDidLoad()
         aProc = AchProc(table: aTable)
         aQuest = GetReq(post: "?session_key=None", url: c.ip+"/ptapi/getAchievements")
-        var rec = CGRectMake(30,150,300,130)
+        var rec = CGRectMake(self.background.frame.width * 0.025,150,self.background.frame.width * 0.95,130)
         aAlert = AchieveAlert()
         var name = "name"
         var des = "des"

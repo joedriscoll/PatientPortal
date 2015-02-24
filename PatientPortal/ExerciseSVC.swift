@@ -26,7 +26,7 @@ class ExerciseSVC: UIViewController {
         self.eQuest = GetReq(post: "?session_key=None", url:c.ip+"/ptapi/getExercisesForPatient")
         self.ePost = PostReq(post:"?session_key=None&exericse_id=None&exercise_date=None&exercise_completion=None", url: c.ip+"/ptapi/addNewInstance")
         eProc = ExerciseProc(table: exerciseTable, lab:dateLabel)
-        eAlert?.setUp(CGRectMake(30,150,300,130), name:"hi",setReps:"There it is", eP:self.eProc!)
+        eAlert?.setUp(CGRectMake(self.background.frame.width * 0.025,150,self.background.frame.width * 0.95,130), name:"hi",setReps:"There it is", eP:self.eProc!)
         dateLabel.textColor = UIColor.darkGrayColor()
     }
     
