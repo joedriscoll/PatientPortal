@@ -11,11 +11,11 @@ import HealthKit
 
 class HKQ {
     var c = Connect()
+    var hkcollquery:HKQuery?
     let health:HKHealthStore = HKHealthStore()
     let stepQuantityType = HKQuantityType.quantityTypeForIdentifier(
         HKQuantityTypeIdentifierStepCount)
     var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
-
     
     func backgroundHealth(){
         health.enableBackgroundDeliveryForType(stepQuantityType, frequency: HKUpdateFrequency.Hourly, withCompletion: {(success: Bool, error: NSError!) in
@@ -28,6 +28,12 @@ class HKQ {
                 }
             }
         })
+    }
+    
+    
+    init(){
+        println("startedhkq")
+        
     }
     
     func datesFromToday() -> (NSDate, NSDate)
@@ -111,9 +117,15 @@ class HKQ {
             //hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
             //hPost.Post(proc)
         }
-        health.executeQuery(query)
+        self.hkcollquery = query
+        health.executeQuery(self.hkcollquery!)
     }
     
+    
+    func stopQueryCol(){
+        health.stopQuery(self.hkcollquery!)
+        
+    }
     
     func query(){
         var (starDate: NSDate, endDate: NSDate) = self.datesFromToday()

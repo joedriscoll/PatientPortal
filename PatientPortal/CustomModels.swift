@@ -642,13 +642,14 @@ class GetReq{
                 
                 self.jsonData = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers, error: &jsonError) as? NSDictionary
                 println(self.url)
-                obj.processData(self.jsonData!)
+                
                 if (jsonError != nil) {
                     println("Error parsing json: \(jsonError)")
                     success = 0
                 }
                 if (self.jsonData?.valueForKey("success") as Int == 1){
                     success = 1
+                    obj.processData(self.jsonData!)
                 }
                 else{
                     success = 0

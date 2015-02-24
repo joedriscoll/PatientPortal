@@ -91,6 +91,7 @@ class LoginVC: UIViewController {
                         prefs.setObject(username, forKey: "USERNAME")
                         prefs.setObject(session_key, forKey: "SESSION_KEY")
                         prefs.setInteger(1, forKey: "ISLOGGEDIN")
+                        prefs.setInteger(0, forKey: "IsHealthQuery")
                         prefs.synchronize()
                         
                         self.dismissViewControllerAnimated(true, completion: nil)
