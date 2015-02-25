@@ -26,12 +26,14 @@ class ExerciseSVC: UIViewController {
         self.eQuest = GetReq(post: "?session_key=None", url:c.ip+"/ptapi/getExercisesForPatient")
         self.ePost = PostReq(post:"?session_key=None&exericse_id=None&exercise_date=None&exercise_completion=None", url: c.ip+"/ptapi/addNewInstance")
         eProc = ExerciseProc(table: exerciseTable, lab:dateLabel)
-        eAlert?.setUp(CGRectMake(self.background.frame.width * 0.025,150,self.background.frame.width * 0.95,130), name:"hi",setReps:"There it is", eP:self.eProc!)
+        eAlert?.setUp(CGRectMake((self.background.frame.width - 305)/2.0,100,305,195), name:"hi",setReps:"There it is", urlString:"url it is", eP:self.eProc!)
         dateLabel.textColor = UIColor.darkGrayColor()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
+        println(self.background.frame.width)
+        println("sfeesf")
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
         var format = NSDateFormatter()
         format.dateFormat = "yyyy-MM-dd"
@@ -84,7 +86,7 @@ class ExerciseSVC: UIViewController {
     func tableView(exerciseTable: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if eAlert?.superview != background{
                 println("hihihih:")
-                eAlert?.update(eProc!.items[indexPath.row],setReps:eProc!.repD[indexPath.row],exercise_id:eProc!.eid[indexPath.row])
+            eAlert?.update(eProc!.items[indexPath.row],setReps:eProc!.repD[indexPath.row], exercise_id:eProc!.eid[indexPath.row],urlString: eProc!.urlD[indexPath.row])
             background.addSubview(eAlert!)
         }
     }

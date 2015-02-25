@@ -284,18 +284,33 @@ class ExerciseAlert: UIView {
     var post:NSString?
     var url:String?
     var eProc: ExerciseProc?
+    var urlString:String?
+    var urlButton:Button?
     
-    func update(name:String,setReps:String, exercise_id:Int){
+    func update(name:String,setReps:String, exercise_id:Int, urlString:String){
         self.nameLabel?.text = name
         self.sets?.text = setReps
         self.exerciseId = exercise_id as Int
+        
+        self.urlString? = urlString
+        
+        if self.urlString? == ""{
+            self.urlButton?.setTitle("No Link Provided", forState: UIControlState.Normal)
+            self.urlButton?.removeTarget(self, action: "lookup:", forControlEvents: UIControlEvents.TouchUpInside)
+            
+        }
+        else {
+            self.urlButton?.setTitle("Link to Exercise Description", forState: UIControlState.Normal)
+            self.urlButton?.addTarget(self, action: "lookup:", forControlEvents: UIControlEvents.TouchUpInside)
+        }
+        
     }
     
     deinit{
         println("destroyed")
     }
     
-    func setUp(frame:CGRect, name:String, setReps:String, eP:ExerciseProc){
+    func setUp(frame:CGRect, name:String, setReps:String, urlString:String, eP:ExerciseProc){
         self.eProc = eP
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
         self.post = "session_key=\(session_key)&data=None"
@@ -307,16 +322,21 @@ class ExerciseAlert: UIView {
         self.sets!.setUp(setReps, frame: CGRectMake(20, 40, 250, 30))
         self.addSubview(nameLabel!)
         self.addSubview(sets!)
+        self.urlString = urlString
+        self.urlButton = Button()
+        self.urlButton?.setUp(self.urlString!, frame: CGRectMake(20, 80, 250, 30))
+        self.urlButton?.backgroundColor = customColor.firstBlue
+        self.addSubview(self.urlButton!)
         self.exerciseComplete = Button()
-        self.exerciseComplete?.setUp("Completed",frame: CGRectMake(190, 80, 80, 30))
+        self.exerciseComplete?.setUp("Completed",frame: CGRectMake(190, 130, 80, 30))
         self.exerciseComplete?.addTarget(self, action:"Completed:", forControlEvents: UIControlEvents.TouchUpInside)
         self.exerciseComplete?.backgroundColor = customColor.firstBlue
         self.exerciseSkip = Button()
-        self.exerciseSkip?.setUp("Skipped",frame: CGRectMake(20, 80, 80, 30))
+        self.exerciseSkip?.setUp("Skipped",frame: CGRectMake(20, 130, 80, 30))
         self.exerciseSkip?.addTarget(self, action:"Skipped:", forControlEvents: UIControlEvents.TouchUpInside)
         self.exerciseSkip?.backgroundColor = customColor.red
         self.exerciseHalf = Button()
-        self.exerciseHalf?.setUp("Attempted",frame: CGRectMake(105, 80, 80, 30))
+        self.exerciseHalf?.setUp("Attempted",frame: CGRectMake(105, 130, 80, 30))
         self.exerciseHalf?.addTarget(self, action:"Attempted:", forControlEvents: UIControlEvents.TouchUpInside)
         self.exerciseHalf?.backgroundColor = UIColor.grayColor()
         self.addSubview(exerciseComplete!)
@@ -327,6 +347,12 @@ class ExerciseAlert: UIView {
         self.layer.borderWidth = 2.0
         self.layer.cornerRadius = 10
         self.frame = frame
+    }
+    
+    
+    func lookup(sender:Button!){
+        println(self.urlString!)
+        UIApplication.sharedApplication().openURL(NSURL(string:self.urlString!)!)
     }
     
     func Completed(sender:Button!){
@@ -398,6 +424,7 @@ class ExerciseProc: Processor{
     var items:[String]
     var repD:[String]
     var comp:[Int]
+    var urlD:[String]
     weak var table:UITableView?
     var today:NSDictionary?
     var tomorrow:NSDictionary?
@@ -412,6 +439,7 @@ class ExerciseProc: Processor{
         self.eid = [1]
         self.date = ["8/11"]
         self.comp = [1]
+        self.urlD = []
         self.table = table
         self.dateLabel = lab
     }
@@ -425,6 +453,7 @@ class ExerciseProc: Processor{
             self.eid = self.days![self.current].valueForKey("exercise_id") as [Int]
             self.comp = self.days![self.current].valueForKey("completion") as [Int]
             self.dateLabel?.text = self.days![self.current].valueForKey("date") as? String
+            self.urlD = self.days![self.current].valueForKey("url") as [String]
             self.table!.reloadData()
         }
     }
@@ -438,6 +467,7 @@ class ExerciseProc: Processor{
             self.eid = self.days![self.current].valueForKey("exercise_id") as [Int]
             self.comp = self.days![self.current].valueForKey("completion") as [Int]
             self.dateLabel?.text = self.days![self.current].valueForKey("date") as? String
+            self.urlD = self.days![self.current].valueForKey("url") as [String]
             self.table!.reloadData()
         }
     }
@@ -454,6 +484,7 @@ class ExerciseProc: Processor{
             self.eid = self.today!.valueForKey("exercise_id") as [Int]
             self.comp = self.today!.valueForKey("completion") as [Int]
             self.dateLabel?.text = self.today!.valueForKey("date") as? String
+            self.urlD = self.today!.valueForKey("url") as [String]
             self.table!.reloadData()
             return Void()
         }
