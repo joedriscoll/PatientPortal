@@ -77,7 +77,7 @@ class ViewController: UIViewController {
         self.painAlert?.clear()
         self.background.addSubview(self.painAlert!)
     }
-    
+
     @IBAction func logoutTapped(sender: UIButton) {
         let appDomain = NSBundle.mainBundle().bundleIdentifier
         NSUserDefaults.standardUserDefaults().removePersistentDomainForName(appDomain!)

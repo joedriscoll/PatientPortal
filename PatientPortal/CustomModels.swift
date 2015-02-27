@@ -542,6 +542,8 @@ class PostReq{
     var queue:NSOperationQueue?
     var postData:NSData?
     var postLength:NSString?
+    var achAlert:UIAlertView = UIAlertView()
+
     
     deinit{
         println("deleted requestttt")
@@ -556,6 +558,9 @@ class PostReq{
         self.queue  = NSOperationQueue()
         self.postData = post.dataUsingEncoding(NSASCIIStringEncoding)!
         self.postLength = String( postData!.length )
+        self.achAlert.title = "Achievement Unlocked!"
+        self.achAlert.message = "You have unlocked a new achivemet! View it on your achievments page"
+        self.achAlert.addButtonWithTitle("OK")
         
     }
     
@@ -569,6 +574,7 @@ class PostReq{
         self.request.setValue(self.postLength, forHTTPHeaderField: "Content-Length")
         self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         self.request.setValue("application/json", forHTTPHeaderField: "Accept")
+
     }
     
     func Post(obj:Processor) -> Int {
@@ -592,6 +598,13 @@ class PostReq{
                 }
                 if (self.jsonData?.valueForKey("success") as Int == 1){
                     success = 1
+                }
+                if (self.jsonData?.valueForKey("success") as Int == 4){
+                    success = 1
+                    obj.processData(self.jsonData!)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.achAlert.show()
+                    }
                 }
                 else{
                     success = 0
@@ -637,6 +650,7 @@ class GetReq{
     var queue:NSOperationQueue?
     var postData:NSData?
     var postLength:NSString?
+    var achAlert:UIAlertView = UIAlertView()
     
     deinit{
         println("deleted Getrequestttt")
@@ -649,6 +663,10 @@ class GetReq{
         self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         self.request.setValue("application/json", forHTTPHeaderField: "Accept")
         self.queue  = NSOperationQueue()
+        self.achAlert.title = "Achievement Unlocked!"
+        self.achAlert.message = "You have unlocked a new achivemet! View it on your achievments page"
+        self.achAlert.addButtonWithTitle("OK")
+        
 
     }
     
@@ -658,6 +676,7 @@ class GetReq{
         self.request.HTTPMethod = "GET"
         self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         self.request.setValue("application/json", forHTTPHeaderField: "Accept")
+
     }
     
     func Get(obj:Processor) -> Int {
@@ -681,6 +700,13 @@ class GetReq{
                 if (self.jsonData?.valueForKey("success") as Int == 1){
                     success = 1
                     obj.processData(self.jsonData!)
+                }
+                if (self.jsonData?.valueForKey("success") as Int == 4){
+                    success = 1
+                    obj.processData(self.jsonData!)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        self.achAlert.show()
+                    }
                 }
                 else{
                     success = 0

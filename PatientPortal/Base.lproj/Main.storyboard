@@ -51,7 +51,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="HFR-Sp-uac" kind="modal" id="r8f-hl-v7V"/>
+                                    <segue destination="HFR-Sp-uac" kind="modal" identifier="gotoAchievements" id="r8f-hl-v7V"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LvT-yF-Vbs" customClass="blueButton" customModule="PatientPortal" customModuleProvider="target">

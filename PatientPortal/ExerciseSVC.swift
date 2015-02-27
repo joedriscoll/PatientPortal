@@ -11,7 +11,6 @@ import UIKit
 class ExerciseSVC: UIViewController {
     @IBOutlet var background: UIView!
     @IBOutlet var exerciseTable: UITableView!
-    
     @IBOutlet weak var dateLabel: UILabel!
     var cell:UITableViewCell?
     var eQuest:GetReq?
@@ -53,6 +52,7 @@ class ExerciseSVC: UIViewController {
     
     @IBAction func prevTapped(sender: UIButton) {
         self.eProc!.prev()
+
     }
     
     func tableView(exerciseTable: UITableView, numberOfRowsInSection section: Int) -> Int {
