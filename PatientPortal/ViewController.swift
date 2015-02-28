@@ -46,7 +46,7 @@ class ViewController: UIViewController {
     
     func setUpHealth() {
         if prefs.integerForKey("IsHealthQuery") as Int != 1{
-            self.hk? = HKQ()
+            self.hk = HKQ()
             self.hk?.authorizeHealthKit { (authorized,  error) -> Void in
                 if authorized {
                     println("HealthKit authorization received.")
@@ -60,9 +60,11 @@ class ViewController: UIViewController {
                 
                 }
             }
+            println("start")
             self.hk?.backgroundHealth()
             //self.hk?.query()
             self.hk?.queryColl()
+            println("=end")
             println("heathsetup")
             prefs.setInteger(1, forKey: "IsHealthQuery")
         }

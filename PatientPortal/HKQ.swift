@@ -48,6 +48,7 @@ class HKQ {
     }
 
     func queryColl(){
+        println("asefeasfas")
         var format = NSDateFormatter()
         format.dateFormat  = "yyyy-MM-dd"
         var hourformat = NSDateFormatter()
@@ -68,24 +69,36 @@ class HKQ {
             }
             var endDate = NSDate()
             let calendar = NSCalendar.currentCalendar()
-            var dateValue:[NSMutableDictionary] = []
+            var dateValue = ""
             let startDate =
             calendar.dateByAddingUnit(.DayCalendarUnit,value: -5, toDate: endDate, options: nil)
             results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
                 statistics, stop in
                 if let quantity = statistics.sumQuantity() {
-                    let datadic = NSMutableDictionary()
                     let date = statistics.startDate
                     let value = quantity.doubleValueForUnit(HKUnit.countUnit())
-                    datadic.setValue(format.stringFromDate(date), forKey: "date")
-                    datadic.setValue(String(Int(value)), forKey: "steps")
-                    datadic.setValue(hourformat.stringFromDate(date), forKey: "hour")
-                    dateValue.append(datadic)
+                    dateValue = dateValue + format.stringFromDate(date) + ","
+                    dateValue = dateValue + String(Int(value)) + ","
+                    dateValue = dateValue + hourformat.stringFromDate(date) + "^"
+                    //dateValue.append(datadic)
                 }
             }
-            println(dateValue)
-            //hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
-            //hPost.Post(proc)
+            
+           // var da = ""
+            //da = da + "2015-02-27,"
+            //da = da + "21,"
+            //da = da  + "10^"//, 21, 10]
+            //println(da)
+            //println("asfeasfasefeasfas")
+            //println("yyyyyyyyy")
+            //var bytes = NSJSONSerialization.dataWithJSONObject(dateValue, options: NSJSONWritingOptions.allZeros, error: nil)
+            //println(bytes)
+
+            //var jsonObj = NSJSONSerialization.JSONObjectWithData(bytes!, options: nil, error: nil) as NSDictionary
+
+            
+            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
+            hPost.Post(proc)
         }
         
         query.statisticsUpdateHandler = {
@@ -98,24 +111,23 @@ class HKQ {
             println("running")
             let endDate = NSDate()
             let calendar = NSCalendar.currentCalendar()
-            var dateValue:[NSMutableDictionary] = []
+            var dateValue = ""
             let startDate =
             calendar.dateByAddingUnit(.DayCalendarUnit,value: -5, toDate: endDate, options: nil)
             results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
                 statistics, stop in
                 if let quantity = statistics.sumQuantity() {
-                    let datadic = NSMutableDictionary()
                     let date = statistics.startDate
                     let value = quantity.doubleValueForUnit(HKUnit.countUnit())
-                    datadic.setValue(format.stringFromDate(date), forKey: "date")
-                    datadic.setValue(String(Int(value)), forKey: "steps")
-                    datadic.setValue(hourformat.stringFromDate(date), forKey: "hour")
-                    dateValue.append(datadic)
+                    dateValue = dateValue + format.stringFromDate(date) + ","
+                    dateValue = dateValue + String(Int(value)) + ","
+                    dateValue = dateValue + hourformat.stringFromDate(date) + "^"
+                    //dateValue.append(datadic)
                 }
             }
             println(dateValue)
-            //hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
-            //hPost.Post(proc)
+            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
+            hPost.Post(proc)
         }
         self.hkcollquery = query
         health.executeQuery(self.hkcollquery!)

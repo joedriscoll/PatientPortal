@@ -587,10 +587,10 @@ class PostReq{
             }
             else{
                 var jsonError:NSError?
+                println(response)
 
                 self.jsonData = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers, error: &jsonError) as? NSDictionary
-                println(error)
-                println("hihihi")
+
                 obj.processData(self.jsonData!)
                 if (jsonError != nil) {
                     println("Error parsing json: \(jsonError)")
