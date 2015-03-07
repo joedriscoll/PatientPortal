@@ -21,12 +21,9 @@ class ViewController: UIViewController {
         let isLoggedIn:Int = prefs.integerForKey("ISLOGGEDIN") as Int
         if (isLoggedIn == 1) {
             setUpHealth()
-        
             
             }
-    
     }
-    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -61,6 +58,7 @@ class ViewController: UIViewController {
                 }
             }
             println("start")
+            sleep(1)
             self.hk?.backgroundHealth()
             //self.hk?.query()
             self.hk?.queryColl()

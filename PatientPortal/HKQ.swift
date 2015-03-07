@@ -43,12 +43,12 @@ class HKQ {
         var components = calendar.components(.YearCalendarUnit | .MonthCalendarUnit | .DayCalendarUnit | .HourCalendarUnit | .MinuteCalendarUnit , fromDate: nowDate)
         components.minute = 0
         var endDate = calendar.dateFromComponents(components)!
-        var starDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitHour, value: -24, toDate: endDate, options: NSCalendarOptions.allZeros)!
-        return (starDate, endDate)
+        var starDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitHour, value: -24*3, toDate: endDate, options: NSCalendarOptions.allZeros)!
+        var realEndDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitYear, value: 5, toDate: endDate, options: NSCalendarOptions.allZeros)!
+        return (starDate, realEndDate)
     }
 
     func queryColl(){
-        println("asefeasfas")
         var format = NSDateFormatter()
         format.dateFormat  = "yyyy-MM-dd"
         var hourformat = NSDateFormatter()
@@ -84,19 +84,7 @@ class HKQ {
                 }
             }
             
-           // var da = ""
-            //da = da + "2015-02-27,"
-            //da = da + "21,"
-            //da = da  + "10^"//, 21, 10]
-            //println(da)
-            //println("asfeasfasefeasfas")
-            //println("yyyyyyyyy")
-            //var bytes = NSJSONSerialization.dataWithJSONObject(dateValue, options: NSJSONWritingOptions.allZeros, error: nil)
-            //println(bytes)
-
-            //var jsonObj = NSJSONSerialization.JSONObjectWithData(bytes!, options: nil, error: nil) as NSDictionary
-
-            
+            println(dateValue)
             hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
             hPost.Post(proc)
         }
@@ -108,12 +96,12 @@ class HKQ {
                 println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
                 abort()
             }
-            println("running")
-            let endDate = NSDate()
+            println("this is updateing")
+            var endDate = NSDate()
             let calendar = NSCalendar.currentCalendar()
             var dateValue = ""
             let startDate =
-            calendar.dateByAddingUnit(.DayCalendarUnit,value: -5, toDate: endDate, options: nil)
+            calendar.dateByAddingUnit(.HourCalendarUnit,value: -3, toDate: endDate, options: nil)
             results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
                 statistics, stop in
                 if let quantity = statistics.sumQuantity() {
@@ -125,9 +113,11 @@ class HKQ {
                     //dateValue.append(datadic)
                 }
             }
+            println("updated")
             println(dateValue)
             hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
             hPost.Post(proc)
+            
         }
         self.hkcollquery = query
         health.executeQuery(self.hkcollquery!)

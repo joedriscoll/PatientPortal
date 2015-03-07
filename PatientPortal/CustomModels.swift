@@ -12,8 +12,8 @@ import Foundation
 var customColor = CustomColors()
 
 class Connect {
-    //let ip:NSString = "http://54.200.62.58"
-    let ip:NSString = "http://localhost:8000"
+    let ip:NSString = "http://52.10.125.75"
+    //let ip:NSString = "http://localhost:8000"
 }
 
 var c = Connect()
