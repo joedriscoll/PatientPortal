@@ -18,7 +18,7 @@ class HKQ {
     var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
     
     func backgroundHealth(){
-        health.enableBackgroundDeliveryForType(stepQuantityType, frequency: HKUpdateFrequency.Hourly, withCompletion: {(success: Bool, error: NSError!) in
+        health.enableBackgroundDeliveryForType(stepQuantityType, frequency: HKUpdateFrequency.Immediate, withCompletion: {(success: Bool, error: NSError!) in
             if success{
                 println("Enabled background delivery of step changes")
             } else {
@@ -162,7 +162,7 @@ class HKQ {
         // 3. If the store is not available (for instance, iPad) return an error and don't go on.
         if !HKHealthStore.isHealthDataAvailable()
         {
-            let error = NSError(domain: "com.raywenderlich.tutorials.healthkit", code: 2, userInfo: [NSLocalizedDescriptionKey:"HealthKit is not available in this Device"])
+            let error = NSError(domain: "kkkk", code: 2, userInfo: [NSLocalizedDescriptionKey:"HealthKit is not available in this Device"])
             if( completion != nil )
             {
                 completion(success:false, error:error)
