@@ -18,7 +18,7 @@ class HKQ {
     var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
     
     func backgroundHealth(){
-        health.enableBackgroundDeliveryForType(stepQuantityType, frequency: HKUpdateFrequency.Immediate, withCompletion: {(success: Bool, error: NSError!) in
+        health.enableBackgroundDeliveryForType(stepQuantityType, frequency: HKUpdateFrequency.Hourly, withCompletion: {(success: Bool, error: NSError!) in
             if success{
                 println("Enabled background delivery of step changes")
             } else {
@@ -43,8 +43,8 @@ class HKQ {
         var components = calendar.components(.YearCalendarUnit | .MonthCalendarUnit | .DayCalendarUnit | .HourCalendarUnit | .MinuteCalendarUnit , fromDate: nowDate)
         components.minute = 0
         var endDate = calendar.dateFromComponents(components)!
-        var starDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitHour, value: -24*3, toDate: endDate, options: NSCalendarOptions.allZeros)!
-        var realEndDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitYear, value: 5, toDate: endDate, options: NSCalendarOptions.allZeros)!
+        var starDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitHour, value: -24*8, toDate: endDate, options: NSCalendarOptions.allZeros)!
+        var realEndDate: NSDate = calendar.dateByAddingUnit(NSCalendarUnit.CalendarUnitDay, value: 100, toDate: endDate, options: NSCalendarOptions.allZeros)!
         return (starDate, realEndDate)
     }
 
@@ -72,7 +72,9 @@ class HKQ {
             var dateValue = ""
             let startDate =
             calendar.dateByAddingUnit(.DayCalendarUnit,value: -5, toDate: endDate, options: nil)
-            results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
+            let realEndDate =
+            calendar.dateByAddingUnit(.DayCalendarUnit,value: 100, toDate: endDate, options: nil)
+            results.enumerateStatisticsFromDate(startDate, toDate: realEndDate) {
                 statistics, stop in
                 if let quantity = statistics.sumQuantity() {
                     let date = statistics.startDate
@@ -102,6 +104,8 @@ class HKQ {
             var dateValue = ""
             let startDate =
             calendar.dateByAddingUnit(.HourCalendarUnit,value: -3, toDate: endDate, options: nil)
+            let realEndDate =
+            calendar.dateByAddingUnit(.DayCalendarUnit,value: 100, toDate: endDate, options: nil)
             results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
                 statistics, stop in
                 if let quantity = statistics.sumQuantity() {
@@ -122,6 +126,92 @@ class HKQ {
         self.hkcollquery = query
         health.executeQuery(self.hkcollquery!)
     }
+    
+    
+    
+    
+    
+    
+    
+    func reloadQueryColl(){
+        var format = NSDateFormatter()
+        format.dateFormat  = "yyyy-MM-dd"
+        var hourformat = NSDateFormatter()
+        hourformat.dateFormat = "HH"
+        var hPost = PostReq(post: "steps=None&session_key=None", url: c.ip+"/ptapi/addsteps")
+        var proc = Processor()
+        var (starDate: NSDate, endDate: NSDate) = self.datesFromToday()
+        var predicate: NSPredicate = HKQuery.predicateForSamplesWithStartDate(starDate, endDate: endDate, options: HKQueryOptions.StrictStartDate)
+        var hour = NSDateComponents()
+        hour.hour = 1
+        var query:HKStatisticsCollectionQuery = HKStatisticsCollectionQuery(quantityType: stepQuantityType, quantitySamplePredicate: predicate, options: HKStatisticsOptions.CumulativeSum, anchorDate: endDate, intervalComponents: hour)
+        query.initialResultsHandler = {
+            query, results, error in
+            if error != nil {
+                // Perform proper error handling here
+                println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
+                abort()
+            }
+            var endDate = NSDate()
+            let calendar = NSCalendar.currentCalendar()
+            var dateValue = ""
+            let startDate =
+            calendar.dateByAddingUnit(.DayCalendarUnit,value: -8, toDate: endDate, options: nil)
+            let realEndDate =
+            calendar.dateByAddingUnit(.DayCalendarUnit,value: 100, toDate: endDate, options: nil)
+            results.enumerateStatisticsFromDate(startDate, toDate: realEndDate) {
+                statistics, stop in
+                if let quantity = statistics.sumQuantity() {
+                    let date = statistics.startDate
+                    let value = quantity.doubleValueForUnit(HKUnit.countUnit())
+                    dateValue = dateValue + format.stringFromDate(date) + ","
+                    dateValue = dateValue + String(Int(value)) + ","
+                    dateValue = dateValue + hourformat.stringFromDate(date) + "^"
+                    //dateValue.append(datadic)
+                }
+            }
+            
+            println(dateValue)
+            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
+            hPost.Post(proc)
+        }
+        
+        query.statisticsUpdateHandler = {
+            query, stats, results, error in
+            if error != nil {
+                // Perform proper error handling here
+                println("*** An error occurred while calculating the statistics: \(error.localizedDescription) ***")
+                abort()
+            }
+            println("this is updateing")
+            var endDate = NSDate()
+            let calendar = NSCalendar.currentCalendar()
+            var dateValue = ""
+            let startDate =
+            calendar.dateByAddingUnit(.HourCalendarUnit,value: -3, toDate: endDate, options: nil)
+            let realEndDate =
+            calendar.dateByAddingUnit(.DayCalendarUnit,value: 100, toDate: endDate, options: nil)
+            results.enumerateStatisticsFromDate(startDate, toDate: endDate) {
+                statistics, stop in
+                if let quantity = statistics.sumQuantity() {
+                    let date = statistics.startDate
+                    let value = quantity.doubleValueForUnit(HKUnit.countUnit())
+                    dateValue = dateValue + format.stringFromDate(date) + ","
+                    dateValue = dateValue + String(Int(value)) + ","
+                    dateValue = dateValue + hourformat.stringFromDate(date) + "^"
+                    //dateValue.append(datadic)
+                }
+            }
+            println("updated")
+            println(dateValue)
+            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
+            hPost.Post(proc)
+            
+        }
+        self.hkcollquery = query
+        health.executeQuery(self.hkcollquery!)
+    }
+
     
     
     func stopQueryCol(){
@@ -149,6 +239,8 @@ class HKQ {
     
     func authorizeHealthKit(completion: ((success:Bool, error:NSError!) -> Void)!)
     {
+        println("authorizing")
+
         // 1. Set the types you want to read from HK Store
         let healthKitTypesToRead = NSSet(array:[
             HKObjectType.quantityTypeForIdentifier(HKQuantityTypeIdentifierActiveEnergyBurned),
@@ -172,9 +264,11 @@ class HKQ {
         
         // 4.  Request HealthKit authorization
         health.requestAuthorizationToShareTypes(healthKitTypesToWrite, readTypes: healthKitTypesToRead) { (success, error) -> Void in
-            
+            println(error)
+            println(success)
             if( completion != nil )
             {
+                println("yayy")
                 completion(success:success,error:error)
             }
         }

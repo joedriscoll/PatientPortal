@@ -47,6 +47,10 @@ class ViewController: UIViewController {
             self.hk?.authorizeHealthKit { (authorized,  error) -> Void in
                 if authorized {
                     println("HealthKit authorization received.")
+                    self.hk?.backgroundHealth()
+                    //self.hk?.query()
+                    self.hk?.queryColl()
+                    self.prefs.setInteger(1, forKey: "IsHealthQuery")
                 }
                 else
                 {
@@ -57,14 +61,7 @@ class ViewController: UIViewController {
                 
                 }
             }
-            println("start")
-            sleep(1)
-            self.hk?.backgroundHealth()
-            //self.hk?.query()
-            self.hk?.queryColl()
-            println("=end")
-            println("heathsetup")
-            prefs.setInteger(1, forKey: "IsHealthQuery")
+            
         }
     }
     override func didReceiveMemoryWarning() {
@@ -73,6 +70,10 @@ class ViewController: UIViewController {
     }
 
 
+    @IBAction func reloadSteps(sender: UIButton) {
+        self.hk?.stopQueryCol()
+        self.hk?.reloadQueryColl()
+    }
     @IBAction func logPainTapped(sender: UIButton) {
         self.painAlert?.clear()
         self.background.addSubview(self.painAlert!)

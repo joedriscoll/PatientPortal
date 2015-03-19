@@ -8,13 +8,15 @@
 
 import UIKit
 
-class LoginVC: UIViewController {
+class LoginVC: UIViewController, UITextFieldDelegate{
 
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     var c = Connect()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.txtUsername.delegate = self
+        self.txtPassword.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -22,6 +24,11 @@ class LoginVC: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
     
@@ -83,7 +90,7 @@ class LoginVC: UIViewController {
                     
                     NSLog("Success: %ld", success);
                     
-                    if(success == 1)
+                    if(success == 1 || success == 4)
                     {
                         NSLog("Login SUCCESS");
                         

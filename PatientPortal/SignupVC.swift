@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SignupVC: UIViewController {
+class SignupVC: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
@@ -17,6 +17,10 @@ class SignupVC: UIViewController {
     var c = Connect()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.txtConfirm.delegate = self
+        self.txtEmail.delegate = self
+        self.txtPassword.delegate = self
+        self.txtUsername.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -24,6 +28,11 @@ class SignupVC: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
     

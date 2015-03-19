@@ -24,6 +24,7 @@ class blueButton:UIButton{
         self.backgroundColor = customColor.firstBlue
         self.layer.cornerRadius = 5
         self.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+
     }
     
 }
@@ -44,7 +45,6 @@ class Button: UIButton {
     func setUp(title:NSString,frame:CGRect){
         self.backgroundColor = UIColor.lightGrayColor()
         self.setTitle(title, forState: UIControlState.Normal)
-        self.titleLabel?.font = UIFont.systemFontOfSize(14)
         self.frame = frame
         self.layer.cornerRadius = 5
 
@@ -330,15 +330,19 @@ class ExerciseAlert: UIView {
         self.exerciseComplete = Button()
         self.exerciseComplete?.setUp("Completed",frame: CGRectMake(190, 130, 80, 30))
         self.exerciseComplete?.addTarget(self, action:"Completed:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.exerciseComplete?.titleLabel?.font = UIFont.systemFontOfSize(14)
         self.exerciseComplete?.backgroundColor = customColor.firstBlue
         self.exerciseSkip = Button()
         self.exerciseSkip?.setUp("Skipped",frame: CGRectMake(20, 130, 80, 30))
         self.exerciseSkip?.addTarget(self, action:"Skipped:", forControlEvents: UIControlEvents.TouchUpInside)
         self.exerciseSkip?.backgroundColor = customColor.red
+        self.exerciseSkip?.titleLabel?.font = UIFont.systemFontOfSize(14)
         self.exerciseHalf = Button()
         self.exerciseHalf?.setUp("Attempted",frame: CGRectMake(105, 130, 80, 30))
         self.exerciseHalf?.addTarget(self, action:"Attempted:", forControlEvents: UIControlEvents.TouchUpInside)
         self.exerciseHalf?.backgroundColor = UIColor.grayColor()
+        self.exerciseHalf?.titleLabel?.font = UIFont.systemFontOfSize(14)
+
         self.addSubview(exerciseComplete!)
         self.addSubview(exerciseSkip!)
         self.addSubview(exerciseHalf!)
