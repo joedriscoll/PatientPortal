@@ -33,7 +33,7 @@ class ViewController: UIViewController {
         } else{
             setUpHealth()
             self.painAlert = PainLevel()
-            self.painAlert?.setUp(CGRectMake(self.background.frame.width * 0.025,100,self.background.frame.width * 0.95,230))
+            self.painAlert?.setUp(CGRectMake(self.background.frame.width * 0.025,100,self.background.frame.width * 0.95,265))
             let username = prefs.valueForKey("USERNAME") as NSString
             titleBar.title = username+"'s Patient Portal"
             //self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
@@ -72,7 +72,8 @@ class ViewController: UIViewController {
 
     @IBAction func reloadSteps(sender: UIButton) {
         self.hk?.stopQueryCol()
-        self.hk?.reloadQueryColl()
+        self.prefs.setInteger(0, forKey: "IsHealthQuery")
+        setUpHealth()
     }
     @IBAction func logPainTapped(sender: UIButton) {
         self.painAlert?.clear()

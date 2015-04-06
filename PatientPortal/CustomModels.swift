@@ -91,6 +91,7 @@ class PainLevel: UIView, SelectorDelegate {
     var painSlider: UISlider?
     var hurtLabel:PainLabel?
     var checkLabel:PainLabel?
+    var painLevelLabel:PainLabel?
     let mSelectorTitles = ["Throb", "Burn", "Sharp","Ache"];
     var boxes:[Selector]?
     var log:Button?
@@ -105,6 +106,9 @@ class PainLevel: UIView, SelectorDelegate {
         self.painSlider?.tintColor = customColor.firstBlue
         self.setStates([0,0,0,0])
     }
+    
+    
+
     
     func setUp(frame:CGRect){
         var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
@@ -124,19 +128,25 @@ class PainLevel: UIView, SelectorDelegate {
         self.hurtLabel?.setUp("Pain Level:", frame: CGRectMake(20, 10, 250, 30))
         self.addSubview(hurtLabel!)
         self.painSlider = UISlider()
-        self.painSlider?.frame = CGRectMake(20, 45, 250, 30)
+        self.painSlider?.frame = CGRectMake(20, 80, 250, 30)
+        self.painSlider?.addTarget(self, action:"sliderValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
         self.addSubview(self.painSlider!)
+        self.painLevelLabel = PainLabel()
+        self.painLevelLabel?.setUp("No Pain", frame: CGRectMake(20, 45, 250, 30))
+        self.painLevelLabel?.textColor = customColor.green
+        self.painLevelLabel?.font = UIFont.systemFontOfSize(19)
+        self.addSubview(self.painLevelLabel!)
         self.checkLabel = PainLabel()
-        self.checkLabel?.setUp("Pain Type:", frame: CGRectMake(20, 90, 250, 30))
+        self.checkLabel?.setUp("Pain Type:", frame: CGRectMake(20, 125, 250, 30))
         self.addSubview(checkLabel!)
         self.boxes = createSelectors()
         self.log = Button()
-        self.log?.setUp("Log Pain", frame: CGRectMake(180, 170, 100, 30))
+        self.log?.setUp("Log Pain", frame: CGRectMake(180, 205, 100, 30))
         self.log?.addTarget(self, action:"logTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         self.log?.backgroundColor = customColor.red
         self.addSubview(self.log!)
         self.cancel = Button()
-        self.cancel?.setUp("Cancel", frame: CGRectMake(20, 170, 100, 30))
+        self.cancel?.setUp("Cancel", frame: CGRectMake(20, 205, 100, 30))
         self.cancel?.addTarget(self, action:"cancelTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         //self.cancel?.backgroundColor = customColor.firstBlue
         self.addSubview(self.cancel!)
@@ -146,6 +156,42 @@ class PainLevel: UIView, SelectorDelegate {
         self.layer.borderWidth = 2.0
         self.layer.cornerRadius = 10
         
+    }
+    
+    
+    @IBAction func sliderValueChanged(sender: UISlider) {
+        if (sender.value == 0){
+            self.painLevelLabel?.text = "No Pain"
+            self.painLevelLabel?.textColor = customColor.green
+            self.painSlider?.tintColor = customColor.green
+            
+        }
+        if (0.0 < sender.value && sender.value < 0.3){
+            self.painLevelLabel?.text = "Can be Ignored"
+            self.painLevelLabel?.textColor = customColor.green
+            self.painSlider?.tintColor = customColor.green
+            
+        }
+        if (0.3 < sender.value && sender.value < 0.5){
+            self.painLevelLabel?.text = "Interferes with Tasks"
+            self.painLevelLabel?.textColor = customColor.firstBlue
+            self.painSlider?.tintColor = customColor.firstBlue
+        }
+        if (0.5 < sender.value && sender.value < 0.7){
+            self.painLevelLabel?.text = "Interferes with Concentration"
+            self.painLevelLabel?.textColor = customColor.purple
+            self.painSlider?.tintColor = customColor.purple
+        }
+        if (0.7 < sender.value && sender.value < 0.95){
+            self.painLevelLabel?.text = "Interferes with Basic Needs"
+            self.painLevelLabel?.textColor = customColor.orange
+            self.painSlider?.tintColor = customColor.orange
+        }
+        if (0.95 < sender.value && sender.value < 1.1){
+            self.painLevelLabel?.text = "Bed Rest Required"
+            self.painLevelLabel?.textColor = customColor.red
+            self.painSlider?.tintColor = customColor.red
+        }
     }
     
     func logTapped(sender:Button!){
@@ -180,7 +226,7 @@ class PainLevel: UIView, SelectorDelegate {
         var boxes:[Selector] = []
         let lNumberOfSelectors = 4;
         let lSelectorHeight: CGFloat = 20.0;
-        var lFrame = CGRectMake(20, 125, 60, lSelectorHeight);
+        var lFrame = CGRectMake(20, 160, 60, lSelectorHeight);
         for (var counter = 0; counter < lNumberOfSelectors; counter++) {
             var lSelector = Selector(frame: lFrame, title: mSelectorTitles[counter], selected: false);
             lSelector.mDelegate = self;
@@ -250,6 +296,7 @@ class AchieveAlert: UIView {
         self.nameLabel?.setUp("name",frame:CGRectMake(20, 10, 250, 30))
         self.descriptLabel = ALabel()
         self.descriptLabel?.setUp("desc", frame:CGRectMake(20, 35, 250, 40))
+        self.descriptLabel?.font = UIFont.systemFontOfSize(14)
         self.addSubview(nameLabel!)
         self.addSubview(descriptLabel!)
         self.ok = Button()
@@ -527,7 +574,7 @@ class Selector: UIButton {
     func applyStyle() {
         self.titleLabel?.font = UIFont.systemFontOfSize(15)
         self.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal);
-        self.setTitleColor(customColor.firstBlue, forState: UIControlState.Selected);
+        self.setTitleColor(customColor.darkBlue, forState: UIControlState.Selected);
     }
     
     func onTouchUpInside(sender: UIButton) {

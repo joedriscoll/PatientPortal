@@ -41,7 +41,7 @@
                                 <rect key="frame" x="56" y="64" width="262" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9Pi-7C-dgY" customClass="blueButton" customModule="PatientPortal" customModuleProvider="target">
@@ -86,7 +86,7 @@
                                 <rect key="frame" x="74" y="472" width="227" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Relead Data">
+                                <state key="normal" title="Reload Data">
                                     <color key="titleColor" red="0.1411764771" green="0.52941179279999995" blue="0.7607843876" alpha="1" colorSpace="deviceRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -121,7 +121,7 @@
                                 <rect key="frame" x="50" y="80" width="274" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="GtX-md-v3E" customClass="redButton" customModule="PatientPortal" customModuleProvider="target">
@@ -139,7 +139,7 @@
                                 <rect key="frame" x="133" y="26" width="108" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="OZI-2q-zX9" customClass="blueButton" customModule="PatientPortal" customModuleProvider="target">
@@ -158,7 +158,7 @@
                                 <rect key="frame" x="53" y="109" width="269" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -187,7 +187,7 @@
                                 <rect key="frame" x="107" y="54" width="161" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="ioN-UW-av9">
@@ -266,7 +266,7 @@
                                 <rect key="frame" x="153" y="59" width="68" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ZMr-By-lC8" customClass="blueButton" customModule="PatientPortal" customModuleProvider="target">
@@ -361,7 +361,7 @@
                                 <rect key="frame" x="114" y="427" width="147" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -398,7 +398,7 @@
                                 <rect key="frame" x="133" y="31" width="108" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Vt8-Mr-bGw" customClass="redButton" customModule="PatientPortal" customModuleProvider="target">
@@ -436,7 +436,7 @@
                                 <rect key="frame" x="166" y="76" width="43" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="un1-MR-9ij" customClass="blueButton" customModule="PatientPortal" customModuleProvider="target">
