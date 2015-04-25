@@ -30,7 +30,7 @@ class SignupVC: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
     }
@@ -64,7 +64,7 @@ class SignupVC: UIViewController, UITextFieldDelegate {
             
             NSLog("PostData: %@",post);
             
-            var url:NSURL = NSURL(string: c.ip+"/ptapi/register")!
+            var url:NSURL = NSURL(string: (c.ip as String)+"/ptapi/register")!
             
             var postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
             
@@ -73,7 +73,7 @@ class SignupVC: UIViewController, UITextFieldDelegate {
             var request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
             request.HTTPMethod = "POST"
             request.HTTPBody = postData
-            request.setValue(postLength, forHTTPHeaderField: "Content-Length")
+            request.setValue(postLength as String, forHTTPHeaderField: "Content-Length")
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             
@@ -84,7 +84,7 @@ class SignupVC: UIViewController, UITextFieldDelegate {
             var urlData: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse:&response, error:&reponseError)
             
             if ( urlData != nil ) {
-                let res = response as NSHTTPURLResponse!;
+                let res = response as! NSHTTPURLResponse!;
                 
                 NSLog("Response code: %ld", res.statusCode);
                 
@@ -96,10 +96,10 @@ class SignupVC: UIViewController, UITextFieldDelegate {
                     
                     var error: NSError?
                     
-                    let jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers , error: &error) as NSDictionary
+                    let jsonData:NSDictionary = NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers , error: &error) as! NSDictionary
                     
                     
-                    let success:NSInteger = jsonData.valueForKey("success") as NSInteger
+                    let success:NSInteger = jsonData.valueForKey("success") as! NSInteger
                     
                     //[jsonData[@"success"] integerValue];
                     
@@ -113,13 +113,13 @@ class SignupVC: UIViewController, UITextFieldDelegate {
                         var error_msg:NSString
                         
                         if jsonData["error_message"] as? NSString != nil {
-                            error_msg = jsonData["error_message"] as NSString
+                            error_msg = jsonData["error_message"] as! NSString
                         } else {
                             error_msg = "Unknown Error"
                         }
                         var alertView:UIAlertView = UIAlertView()
                         alertView.title = "Sign Up Failed!"
-                        alertView.message = error_msg
+                        alertView.message = error_msg as String
                         alertView.delegate = self
                         alertView.addButtonWithTitle("OK")
                         alertView.show()

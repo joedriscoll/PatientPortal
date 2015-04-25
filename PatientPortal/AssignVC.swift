@@ -16,7 +16,7 @@ class AssignVC: UIViewController {
     var c:Connect = Connect()
     override func viewDidLoad() {
         super.viewDidLoad()
-        asPost = PostReq(post: "pt_username=None&session_key=None", url: self.c.ip + "/ptapi/assignPT")
+        asPost = PostReq(post: "pt_username=None&session_key=None", url: (self.c.ip as String) + "/ptapi/assignPT")
         aP = asProcessor(VC: self)
         
         // Do any additional setup after loading the view.
@@ -56,14 +56,14 @@ class AssignVC: UIViewController {
         }
         override func processData(data: NSDictionary) {
             super.processData(data)
-            let success:NSInteger = data.valueForKey("success") as NSInteger
+            let success:NSInteger = data.valueForKey("success") as! NSInteger
             if(success == 1)
             {
                 NSLog("Sign Up SUCCESS");
                 self.VC?.dismiss()
             } else {
                 if data["error_message"] as? NSString != nil {
-                    self.alertView.message = data["error_message"] as NSString
+                    self.alertView.message = data["error_message"] as! NSString as String
                 } else {
                     self.alertView.message = "PT Username Not Found"
                 }
@@ -76,9 +76,9 @@ class AssignVC: UIViewController {
 
     @IBAction func changePtTapped(sender: UIButton) {
         let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        let session_key = prefs.valueForKey("SESSION_KEY") as NSString
+        let session_key = prefs.valueForKey("SESSION_KEY") as! NSString
         var ptusername:NSString = ptUsername.text
-        asPost?.update("pt_username=\(ptusername)&session_key=\(session_key)", url: c.ip+"/ptapi/assignPT")
+        asPost?.update("pt_username=\(ptusername)&session_key=\(session_key)", url: (c.ip as String)+"/ptapi/assignPT")
         asPost?.Post(aP!)
             }
     

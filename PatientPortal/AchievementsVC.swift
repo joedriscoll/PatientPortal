@@ -22,7 +22,7 @@ class AchievementsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         aProc = AchProc(table: aTable)
-        aQuest = GetReq(post: "?session_key=None", url: c.ip+"/ptapi/getAchievements")
+        aQuest = GetReq(post: "?session_key=None", url: (c.ip as String)+"/ptapi/getAchievements")
         var rec = CGRectMake((self.background.frame.width - 305)/2.0,150,305,130)
         aAlert = AchieveAlert()
         var name = "name"
@@ -36,8 +36,8 @@ class AchievementsVC: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
-        self.aQuest?.update("?session_key=\(session_key)", url: c.ip+"/ptapi/getAchievements")
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as! NSString
+        self.aQuest?.update("?session_key=\(session_key)", url: (c.ip as String)+"/ptapi/getAchievements")
         self.aQuest?.Get(self.aProc!)
     }
 
@@ -69,7 +69,7 @@ class AchievementsVC: UIViewController {
     func tableView(aTable: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if aAlert?.superview != background{
             var name = aProc!.items[indexPath.row]
-            aAlert?.update(name, des:aProc!.nameToD!.valueForKey(name) as String)
+            aAlert?.update(name, des:aProc!.nameToD!.valueForKey(name) as! String)
             background.addSubview(aAlert!)
         }
     }

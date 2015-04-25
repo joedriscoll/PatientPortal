@@ -19,7 +19,7 @@ class SettingsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.getSettings()
-        setReq = GetReq(post: "?session_key=None&username=None", url: c.ip+"/ptapi/settings")
+        setReq = GetReq(post: "?session_key=None&username=None", url: (c.ip as String)+"/ptapi/settings")
         set = setProc(but:changePTButton, lab:assingedPTLabel)
 
     }
@@ -40,9 +40,9 @@ class SettingsVC: UIViewController {
         }
         override func processData(data: NSDictionary) {
             super.processData(data)
-            let ptUsername:NSString = data.valueForKey("assigned_pt") as NSString!
+            let ptUsername:NSString = data.valueForKey("assigned_pt") as! NSString!
             dispatch_async(dispatch_get_main_queue()) {
-                self.lab.text = ptUsername
+                self.lab.text = ptUsername as String
             
                 if (ptUsername == "None"){
                 
@@ -68,9 +68,9 @@ class SettingsVC: UIViewController {
     }
     
     func getSettings(){
-        let session_key:NSString = prefs.valueForKey("SESSION_KEY") as NSString
-        let username:NSString = prefs.valueForKey("USERNAME") as NSString
-        setReq?.update("?session_key=\(session_key)&username=\(username)", url: c.ip+"/ptapi/settings")
+        let session_key:NSString = prefs.valueForKey("SESSION_KEY") as! NSString
+        let username:NSString = prefs.valueForKey("USERNAME") as! NSString
+        setReq?.update("?session_key=\(session_key)&username=\(username)", url: (c.ip as String)+"/ptapi/settings")
         setReq?.Get(set!)
     }
     /*

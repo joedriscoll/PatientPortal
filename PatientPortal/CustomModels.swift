@@ -44,7 +44,7 @@ class Button: UIButton {
     
     func setUp(title:NSString,frame:CGRect){
         self.backgroundColor = UIColor.lightGrayColor()
-        self.setTitle(title, forState: UIControlState.Normal)
+        self.setTitle(title as String, forState: UIControlState.Normal)
         self.frame = frame
         self.layer.cornerRadius = 5
 
@@ -111,9 +111,9 @@ class PainLevel: UIView, SelectorDelegate {
 
     
     func setUp(frame:CGRect){
-        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as! NSString
         self.post = "session_key=\(session_key)&data=None"
-        self.url = c.ip+"/ptapi/logPain"
+        self.url = (c.ip as String)+"/ptapi/logPain"
         self.painLog = PostReq(post:self.post!, url:self.url!)
         self.successAlertView = UIAlertView()
         self.successAlertView?.title = "Pain Logged"
@@ -198,13 +198,13 @@ class PainLevel: UIView, SelectorDelegate {
         println("Logit!")
         var states:[Float] = self.getStates()
         states.append(self.painSlider!.value)
-        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as! NSString
         var format = NSDateFormatter()
         format.dateFormat  = "yyyy-MM-dd"
         var hour = NSDateFormatter()
         hour.dateFormat = "HH"
         self.post = "session_key=\(session_key)&time=\(format.stringFromDate((NSDate())))&hour=\(hour.stringFromDate(NSDate()))&data=\(states)"
-        self.url = c.ip+"/ptapi/logPain"
+        self.url = (c.ip as String)+"/ptapi/logPain"
         painLog?.update(self.post!, url:self.url!)
         var success = painLog?.Post(painP)
         //if success == 1{
@@ -341,7 +341,7 @@ class ExerciseAlert: UIView {
         
         self.urlString? = urlString
         
-        if self.urlString? == ""{
+        if self.urlString! == ""{
             self.urlButton?.setTitle("No Link Provided", forState: UIControlState.Normal)
             self.urlButton?.removeTarget(self, action: "lookup:", forControlEvents: UIControlEvents.TouchUpInside)
             
@@ -359,9 +359,9 @@ class ExerciseAlert: UIView {
     
     func setUp(frame:CGRect, name:String, setReps:String, urlString:String, eP:ExerciseProc){
         self.eProc = eP
-        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as! NSString
         self.post = "session_key=\(session_key)&data=None"
-        self.url = c.ip+"/ptapi/addNewInstance"
+        self.url = (c.ip as String)+"/ptapi/addNewInstance"
         self.ePost = PostReq(post: post!, url: url!)
         self.nameLabel = ExerciseLabel()
         self.nameLabel?.setUp("name",frame:CGRectMake(20, 10, 250, 30))
@@ -408,7 +408,7 @@ class ExerciseAlert: UIView {
     
     func Completed(sender:Button!){
         println("Complete")
-        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as! NSString
         var status = 2
         var date = eProc!.dateLabel!.text!
         var format = NSDateFormatter()
@@ -422,7 +422,7 @@ class ExerciseAlert: UIView {
     
     func Attempted(sender:Button!){
         println("attempted")
-        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as! NSString
         var status = 1
         var date = eProc!.dateLabel!.text!
         self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId!)&exercise_completion=\(status)&exercise_date=\(date)"
@@ -434,7 +434,7 @@ class ExerciseAlert: UIView {
     
     func Skipped(sender:Button!){
         println("skipped")
-        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as! NSString
         var status = 0
         var date = eProc!.dateLabel!.text!
         self.post = "session_key=\(session_key)&exercise_id=\(self.exerciseId!)&exercise_completion=\(status)&exercise_date=\(date)"
@@ -461,8 +461,8 @@ class AchProc: Processor{
         super.processData(data)
         dispatch_async(dispatch_get_main_queue()) {
             self.nameToD = data.valueForKey("nameToD") as? NSDictionary
-            self.complete = data.valueForKey("complete") as [String]
-            self.items = data.valueForKey("complete") as [String]
+            self.complete = data.valueForKey("complete") as! [String]
+            self.items = data.valueForKey("complete") as! [String]
             self.table!.reloadData()
             return Void()
         }
@@ -499,12 +499,12 @@ class ExerciseProc: Processor{
         if self.current < 2{
             println("this should happen")
             self.current = self.current + 1
-            self.items = self.days![self.current].valueForKey("exercise_name") as [String]
-            self.repD = self.days![self.current].valueForKey("reps") as [String]
-            self.eid = self.days![self.current].valueForKey("exercise_id") as [Int]
-            self.comp = self.days![self.current].valueForKey("completion") as [Int]
+            self.items = self.days![self.current].valueForKey("exercise_name") as! [String]
+            self.repD = self.days![self.current].valueForKey("reps") as! [String]
+            self.eid = self.days![self.current].valueForKey("exercise_id") as! [Int]
+            self.comp = self.days![self.current].valueForKey("completion") as! [Int]
             self.dateLabel?.text = self.days![self.current].valueForKey("date") as? String
-            self.urlD = self.days![self.current].valueForKey("url") as [String]
+            self.urlD = self.days![self.current].valueForKey("url") as! [String]
             self.table!.reloadData()
         }
     }
@@ -513,12 +513,12 @@ class ExerciseProc: Processor{
         
         if self.current > 0{
             self.current = self.current - 1
-            self.items = self.days![self.current].valueForKey("exercise_name") as [String]
-            self.repD = self.days![self.current].valueForKey("reps") as [String]
-            self.eid = self.days![self.current].valueForKey("exercise_id") as [Int]
-            self.comp = self.days![self.current].valueForKey("completion") as [Int]
+            self.items = self.days![self.current].valueForKey("exercise_name") as! [String]
+            self.repD = self.days![self.current].valueForKey("reps") as! [String]
+            self.eid = self.days![self.current].valueForKey("exercise_id") as! [Int]
+            self.comp = self.days![self.current].valueForKey("completion") as! [Int]
             self.dateLabel?.text = self.days![self.current].valueForKey("date") as? String
-            self.urlD = self.days![self.current].valueForKey("url") as [String]
+            self.urlD = self.days![self.current].valueForKey("url") as! [String]
             self.table!.reloadData()
         }
     }
@@ -530,12 +530,12 @@ class ExerciseProc: Processor{
             self.tomorrow = data.valueForKey("rd") as? NSDictionary
             self.yesterday = data.valueForKey("yd") as? NSDictionary
             self.days = [self.yesterday!, self.today!, self.tomorrow!]
-            self.items = self.today!.valueForKey("exercise_name") as [String]
-            self.repD = self.today!.valueForKey("reps") as [String]
-            self.eid = self.today!.valueForKey("exercise_id") as [Int]
-            self.comp = self.today!.valueForKey("completion") as [Int]
+            self.items = self.today!.valueForKey("exercise_name") as! [String]
+            self.repD = self.today!.valueForKey("reps") as! [String]
+            self.eid = self.today!.valueForKey("exercise_id") as! [Int]
+            self.comp = self.today!.valueForKey("completion") as! [Int]
             self.dateLabel?.text = self.today!.valueForKey("date") as? String
-            self.urlD = self.today!.valueForKey("url") as [String]
+            self.urlD = self.today!.valueForKey("url") as! [String]
             self.table!.reloadData()
             return Void()
         }
@@ -552,7 +552,7 @@ class ExerciseProc: Processor{
 class Selector: UIButton {
     weak var mDelegate: SelectorDelegate?;
     required init(coder: NSCoder) {
-        super.init();
+        super.init(coder:coder);
     }
     
     deinit{
@@ -572,7 +572,7 @@ class Selector: UIButton {
     }
     
     func applyStyle() {
-        self.titleLabel?.font = UIFont.systemFontOfSize(15)
+        self.titleLabel?.font = UIFont.systemFontOfSize(18)
         self.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal);
         self.setTitleColor(customColor.darkBlue, forState: UIControlState.Selected);
     }
@@ -622,7 +622,7 @@ class PostReq{
         self.request = NSMutableURLRequest(URL: self.url)
         self.request.HTTPMethod = "POST"
         self.request.HTTPBody = self.postData
-        self.request.setValue(self.postLength, forHTTPHeaderField: "Content-Length")
+        self.request.setValue((self.postLength as! String), forHTTPHeaderField: "Content-Length")
         self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         self.request.setValue("application/json", forHTTPHeaderField: "Accept")
 
@@ -647,10 +647,10 @@ class PostReq{
                     println("Error parsing json: \(jsonError)")
                     success = 0
                 }
-                if (self.jsonData?.valueForKey("success") as Int == 1){
+                if (self.jsonData?.valueForKey("success") as! Int == 1){
                     success = 1
                 }
-                if (self.jsonData?.valueForKey("success") as Int == 4){
+                if (self.jsonData?.valueForKey("success") as! Int == 4){
                     success = 1
                     obj.processData(self.jsonData!)
                     dispatch_async(dispatch_get_main_queue()) {
@@ -678,14 +678,14 @@ class asProcessor:Processor{
     }
     override func processData(data: NSDictionary) {
         super.processData(data)
-        var success:NSInteger = data.valueForKey("success") as NSInteger
+        var success:NSInteger = data.valueForKey("success") as! NSInteger
         if(success == 1)
         {
             NSLog("Sign Up SUCCESS");
         } else {
             var error_msg:NSString
             if data["error_message"] as? NSString != nil {
-                error_msg = data["error_message"] as NSString
+                error_msg = data["error_message"] as! NSString
             } else {
                 error_msg = "PT Username Not Found"
             }
@@ -708,7 +708,7 @@ class GetReq{
     }
     
     init(post:NSString, url:String){
-        self.url = NSURL(string: url+post)!
+        self.url = NSURL(string: url+(post as String))!
         self.request = NSMutableURLRequest(URL: self.url)
         self.request.HTTPMethod = "GET"
         self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -722,7 +722,7 @@ class GetReq{
     }
     
     func update(post:NSString, url:String){
-        self.url = NSURL(string: url+post)!
+        self.url = NSURL(string: url+(post as String))!
         self.request = NSMutableURLRequest(URL: self.url)
         self.request.HTTPMethod = "GET"
         self.request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -748,11 +748,11 @@ class GetReq{
                     println("Error parsing json: \(jsonError)")
                     success = 0
                 }
-                if (self.jsonData?.valueForKey("success") as Int == 1){
+                if (self.jsonData?.valueForKey("success") as! Int == 1){
                     success = 1
                     obj.processData(self.jsonData!)
                 }
-                if (self.jsonData?.valueForKey("success") as Int == 4){
+                if (self.jsonData?.valueForKey("success") as! Int == 4){
                     success = 1
                     obj.processData(self.jsonData!)
                     dispatch_async(dispatch_get_main_queue()) {

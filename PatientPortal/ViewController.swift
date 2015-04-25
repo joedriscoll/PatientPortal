@@ -34,8 +34,8 @@ class ViewController: UIViewController {
             setUpHealth()
             self.painAlert = PainLevel()
             self.painAlert?.setUp(CGRectMake(self.background.frame.width * 0.025,100,self.background.frame.width * 0.95,265))
-            let username = prefs.valueForKey("USERNAME") as NSString
-            titleBar.title = username+"'s Patient Portal"
+            let username = prefs.valueForKey("USERNAME") as! NSString
+            titleBar.title = (username as String)+"'s Patient Portal"
             //self.usernameLabel.text = prefs.valueForKey("USERNAME") as NSString
         }
     }

@@ -15,7 +15,7 @@ class HKQ {
     let health:HKHealthStore = HKHealthStore()
     let stepQuantityType = HKQuantityType.quantityTypeForIdentifier(
         HKQuantityTypeIdentifierStepCount)
-    var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+    var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as! NSString
     
     func backgroundHealth(){
         health.enableBackgroundDeliveryForType(stepQuantityType, frequency: HKUpdateFrequency.Hourly, withCompletion: {(success: Bool, error: NSError!) in
@@ -53,7 +53,7 @@ class HKQ {
         format.dateFormat  = "yyyy-MM-dd"
         var hourformat = NSDateFormatter()
         hourformat.dateFormat = "HH"
-        var hPost = PostReq(post: "steps=None&session_key=None", url: c.ip+"/ptapi/addsteps")
+        var hPost = PostReq(post: "steps=None&session_key=None", url: (c.ip as String)+"/ptapi/addsteps")
         var proc = Processor()
         var (starDate: NSDate, endDate: NSDate) = self.datesFromToday()
         var predicate: NSPredicate = HKQuery.predicateForSamplesWithStartDate(starDate, endDate: endDate, options: HKQueryOptions.StrictStartDate)
@@ -87,7 +87,7 @@ class HKQ {
             }
             
             println(dateValue)
-            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
+            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: (self.c.ip as String)+"/ptapi/addsteps")
             hPost.Post(proc)
         }
         
@@ -119,7 +119,7 @@ class HKQ {
             }
             println("updated")
             println(dateValue)
-            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
+            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: (self.c.ip as String)+"/ptapi/addsteps")
             hPost.Post(proc)
             
         }
@@ -138,7 +138,7 @@ class HKQ {
         format.dateFormat  = "yyyy-MM-dd"
         var hourformat = NSDateFormatter()
         hourformat.dateFormat = "HH"
-        var hPost = PostReq(post: "steps=None&session_key=None", url: c.ip+"/ptapi/addsteps")
+        var hPost = PostReq(post: "steps=None&session_key=none", url: (c.ip as String)+"/ptapi/addsteps")
         var proc = Processor()
         var (starDate: NSDate, endDate: NSDate) = self.datesFromToday()
         var predicate: NSPredicate = HKQuery.predicateForSamplesWithStartDate(starDate, endDate: endDate, options: HKQueryOptions.StrictStartDate)
@@ -172,7 +172,7 @@ class HKQ {
             }
             
             println(dateValue)
-            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
+            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: (self.c.ip as String)+"/ptapi/addsteps")
             hPost.Post(proc)
         }
         
@@ -204,7 +204,7 @@ class HKQ {
             }
             println("updated")
             println(dateValue)
-            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: self.c.ip+"/ptapi/addsteps")
+            hPost.update("steps=\(dateValue)&session_key=\(self.session_key)", url: (self.c.ip as String)+"/ptapi/addsteps")
             hPost.Post(proc)
             
         }
@@ -263,7 +263,7 @@ class HKQ {
         }
         
         // 4.  Request HealthKit authorization
-        health.requestAuthorizationToShareTypes(healthKitTypesToWrite, readTypes: healthKitTypesToRead) { (success, error) -> Void in
+        health.requestAuthorizationToShareTypes(healthKitTypesToWrite as Set<NSObject>, readTypes: healthKitTypesToRead as Set<NSObject>) { (success, error) -> Void in
             println(error)
             println(success)
             if( completion != nil )

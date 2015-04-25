@@ -22,8 +22,8 @@ class ExerciseSVC: UIViewController {
         super.viewDidLoad()
         eAlert = ExerciseAlert()
         
-        self.eQuest = GetReq(post: "?session_key=None", url:c.ip+"/ptapi/getExercisesForPatient")
-        self.ePost = PostReq(post:"?session_key=None&exericse_id=None&exercise_date=None&exercise_completion=None", url: c.ip+"/ptapi/addNewInstance")
+        self.eQuest = GetReq(post: "?session_key=None", url:(c.ip as String)+"/ptapi/getExercisesForPatient")
+        self.ePost = PostReq(post:"?session_key=None&exericse_id=None&exercise_date=None&exercise_completion=None", url: (c.ip as String)+"/ptapi/addNewInstance")
         eProc = ExerciseProc(table: exerciseTable, lab:dateLabel)
         eAlert?.setUp(CGRectMake((self.background.frame.width - 305)/2.0,100,305,195), name:"hi",setReps:"There it is", urlString:"url it is", eP:self.eProc!)
         dateLabel.textColor = UIColor.darkGrayColor()
@@ -33,10 +33,10 @@ class ExerciseSVC: UIViewController {
         super.viewDidAppear(true)
         println(self.background.frame.width)
         println("sfeesf")
-        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as NSString
+        var session_key = NSUserDefaults.standardUserDefaults().valueForKey("SESSION_KEY") as! NSString
         var format = NSDateFormatter()
         format.dateFormat = "yyyy-MM-dd"
-        self.eQuest?.update("?session_key=\(session_key)&date=\(format.stringFromDate(NSDate()))", url: c.ip+"/ptapi/getExercisesForPatient")
+        self.eQuest?.update("?session_key=\(session_key)&date=\(format.stringFromDate(NSDate()))", url: (c.ip as String)+"/ptapi/getExercisesForPatient")
         self.eQuest?.Get(self.eProc!)
     }
 
